@@ -2,11 +2,11 @@
 
 ### Install
 
-#### `yarn add express`
+#### `yarn install`
 
 Global dependecies
 
-#### `yarn add -D @types/node @types/express typescript rimraf ts-node nodemon`
+#### `yarn add -D @types/node @types/express typescript ts-node nodemon`
 
 Developer local dependecies
 
