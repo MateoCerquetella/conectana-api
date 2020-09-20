@@ -1,7 +1,7 @@
-import { config } from '../config/config';
+// import { config } from '../config/config';
 import pgp from 'pg-promise';
 
-console.log(config);
+// console.log(config);
 
 // const db = pgp(config.DB);
 
