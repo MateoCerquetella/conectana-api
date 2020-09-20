@@ -1,5 +1,5 @@
 // import { config } from '../config/config';
-import pgp from 'pg-promise';
+// import pgp from 'pg-promise';
 
 // console.log(config);
 
