@@ -3,6 +3,8 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 // import db from './database/db';
 import { userRoutes } from './api/user/user.routes';
+import utils from './utils'
+global.utils = utils
 
 // Declare server
 const app = express();
