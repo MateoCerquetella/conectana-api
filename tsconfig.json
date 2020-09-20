@@ -6,6 +6,9 @@
     "outDir": "./build",
     "esModuleInterop": true,
     "strict": true,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "rootDirs": [
+      "./src/typings/index.d.ts"
+    ]
   }
 }
