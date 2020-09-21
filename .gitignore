@@ -39,7 +39,7 @@ node_modules/
 jspm_packages/
 
 # TypeScript v1 declaration files
-typings/
+# typings/
 
 # Optional npm cache directory
 .npm
@@ -113,7 +113,7 @@ sw.*
 npm-debug.log
 yarn-error.log
 testem.log
-/typings
+# /typings
 localhost-key.pem
 localhost.pem
 
