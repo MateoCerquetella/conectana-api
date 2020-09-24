@@ -4,6 +4,9 @@ import bodyParser from 'body-parser';
 // import db from './database/db';
 import { userRoutes } from './api/user/user.routes';
 import utils from './utils'
+
+// Declare global
+declare var global: any
 global.utils = utils
 
 // Declare server

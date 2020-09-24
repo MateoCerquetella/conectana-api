@@ -1,7 +1,7 @@
 declare module NodeJS {
   interface Global {
     utils: {
-      parseBool: (txt: any) => boolean
+      parseBool: (txt: any) => boolean;
     };
     CONSTANTS: {
       DATABASE_URL: string;
