@@ -5,7 +5,7 @@ import { UserController } from './user.controller';
 const router = express.Router();
 const user = new UserController();
 
-export function userRoutes(app: Express) {
+export default function userRoutes(app: Express) {
   router.get('/login', user.login);
   router.post('/', user.create);
   router.get('/', user.findAll);
