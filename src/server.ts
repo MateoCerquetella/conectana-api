@@ -8,7 +8,6 @@ import utils from './utils';
 // Declare global
 declare var global: any;
 global.utils = utils;
-console.log(global.utils);
 
 // Declare server
 const app = express();
@@ -17,9 +16,6 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
-
-// Init DB
-app.set("db", db);
 
 // Routing
 userRoutes(app);

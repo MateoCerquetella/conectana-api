@@ -9,5 +9,19 @@ export default knex({
         password: 'your_database_password',
         database: 'myapp_test'
     },
-    acquireConnectionTimeout: 10000
+    acquireConnectionTimeout: 10000,
+    log: {
+        warn(message) {
+            console.log(message);
+        },
+        error(message) {
+            console.log(message);
+        },
+        deprecate(message) {
+            console.log(message);
+        },
+        debug(message) {
+            console.log(message);
+        },
+    }
 });
