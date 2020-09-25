@@ -1,13 +1,14 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-// import db from './database/db';
+import db from './database/db';
 import { userRoutes } from './api/user/user.routes';
-import utils from './utils'
+import utils from './utils';
 
 // Declare global
-declare var global: any
-global.utils = utils
+declare var global: any;
+global.utils = utils;
+console.log(global.utils);
 
 // Declare server
 const app = express();
@@ -18,14 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 // Init DB
-// db.connect()
-//     .then(obj => {
-//         obj.done();
-//         console.log('DB initiated...');
-//     })
-//     .catch(error => {
-//         console.log('DB Error:', error.message || error);
-//     });
+app.set("db", db);
 
 // Routing
 userRoutes(app);

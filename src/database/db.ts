@@ -1,8 +1,13 @@
 // import { config } from '../config/config';
-// import pgp from 'pg-promise';
+import knex from 'knex';
 
-// console.log(config);
-
-// const db = pgp(config.DB);
-
-// module.exports = db;
+export default knex({
+    client: 'pg',
+    connection: {
+        host: '127.0.0.1',
+        user: 'your_database_user',
+        password: 'your_database_password',
+        database: 'myapp_test'
+    },
+    acquireConnectionTimeout: 10000
+});

@@ -121,3 +121,4 @@ localhost.pem
 Thumbs.db
 
 */README.MD
+src/env.config.*
