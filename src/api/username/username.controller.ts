@@ -1,64 +1,54 @@
+import * as express from 'express';
+import db from '../../database/db'
 import { UsernameI } from './username.model'
+
+const usernameTable = () => db<UsernameI>('username');
 
 export class UsernameController {
 
-  login(req: any, res: any) {
-    const foo: UsernameI = {
-      first_name: "mateo",
-      last_name: "cerquetella"
-    }
+  login(req: express.Request, res: express.Response) {
 
-    return res.status(200).send(foo);
+
+    return res.status(200).send();
   }
 
-  create(req: any, res: any) {
-    const foo: UsernameI = {
-      first_name: "mateo2",
-      last_name: "cerquetella2"
-    }
+  create(req: express.Request, res: express.Response) {
 
-    return res.status(200).send(foo);
+
+    return res.status(200).send();
   }
 
-  findAll(req: any, res: any) {
-    const foo: UsernameI = {
-      first_name: "mateo2",
-      last_name: "cerquetella2"
-    }
-
-    return res.status(200).send(foo);
+  findAll(req: express.Request, res: express.Response) {
+    usernameTable()
+      .select('id')
+      .select('username')
+      .then((user) => {
+        console.log(user);
+        return res.status(200).send(user);
+      });
   }
 
-  findOne(req: any, res: any) {
+  findOne(req: express.Request, res: express.Response) {
     const id = req.params.id;
 
-    const foo: UsernameI = {
-      first_name: "mateo2",
-      last_name: "cerquetella2"
-    }
+
 
     return res.status(200).send(id);
   }
 
-  update(req: any, res: any) {
+  update(req: express.Request, res: express.Response) {
     const id = req.params.id;
 
-    const foo: UsernameI = {
-      first_name: "mateo2",
-      last_name: "cerquetella2"
-    }
 
-    return res.status(200).send(foo);
+
+    return res.status(200).send();
   }
 
-  delete(req: any, res: any) {
+  delete(req: express.Request, res: express.Response) {
     const id = req.params.id;
 
-    const foo: UsernameI = {
-      first_name: "mateo2",
-      last_name: "cerquetella2"
-    }
 
-    return res.status(200).send(foo);
+
+    return res.status(200).send();
   }
 }

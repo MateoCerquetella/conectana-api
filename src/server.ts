@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import usernameRoutes from './api/username/username.routes';
-import db from './database/db'
+
 // Declare server
 const app = express();
 

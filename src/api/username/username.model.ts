@@ -1,4 +1,9 @@
 export interface UsernameI {
-    first_name: string;
-    last_name: string;
+    id: number;
+    username: string;
+    email: string;
+    password: string;
+    id_colaborator: number;
+    id_organization: number;
+    cellphone: string;
 }
