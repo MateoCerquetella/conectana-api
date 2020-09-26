@@ -20,12 +20,13 @@ export class UsernameController {
 
   findAll(req: express.Request, res: express.Response) {
     usernameTable()
-      .select('id')
-      .select('username')
-      .then((user) => {
-        console.log(user);
+      .select()
+      .then((user: UsernameI[]) => {
         return res.status(200).send(user);
-      });
+      })
+      .catch(() => {
+        return res.status(500).json({ message: 'Server error' });
+      })
   }
 
   findOne(req: express.Request, res: express.Response) {
