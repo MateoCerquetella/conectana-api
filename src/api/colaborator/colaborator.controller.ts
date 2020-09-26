@@ -59,17 +59,10 @@ export class ColaboratorController {
     const colaboratorTmp: ColaboratorI = req.body;
     colaboratorTmp.id = +req.params.id;
 
-    //Validate request
-    if (!colaboratorTmp.first_name || !colaboratorTmp.last_name || !colaboratorTmp.date_birth || !colaboratorTmp.tag_id) {
-      return res.status(400).send({
-        message: 'Falta contenido y/o no puede estar vacio.'
-      });
-    }
-
     table()
       .where({ id: colaboratorTmp.id })
       .update(colaboratorTmp)
-      .then((colaborator) => {
+      .then((colaborator: number) => {
         return colaborator > 0 ?
           res.status(200).send({ message: 'Modificado con éxito' }) :
           res.status(404).send({ message: 'Colaborador no encontrado' });
@@ -83,8 +76,8 @@ export class ColaboratorController {
     table()
       .where({ id: +req.params.id })
       .del()
-      .then((tag) => {
-        return tag > 0 ?
+      .then((colaborator: number) => {
+        return colaborator > 0 ?
           res.status(200).send({ message: 'Borrado con éxito' }) :
           res.status(404).send({ message: 'Colaborador no encontrado' });
       })

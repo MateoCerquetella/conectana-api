@@ -70,7 +70,7 @@ export class TagController {
     table()
       .where({ id: tagTmp.id })
       .update({ name: tagTmp.name })
-      .then((tag) => {
+      .then((tag: number) => {
         return tag > 0 ?
           res.status(200).send({ message: 'Modificado con éxito' }) :
           res.status(404).send({ message: 'Tag no encontrado' });
@@ -84,7 +84,7 @@ export class TagController {
     table()
       .where({ id: +req.params.id })
       .del()
-      .then((tag) => {
+      .then((tag: number) => {
         return tag > 0 ?
           res.status(200).send({ message: 'Borrado con éxito' }) :
           res.status(404).send({ message: 'Tag no encontrado' });
