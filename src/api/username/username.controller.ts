@@ -26,15 +26,22 @@ export class UsernameController {
       })
       .catch(() => {
         return res.status(500).json({ message: 'Server error' });
-      })
+      });
   }
 
   findOne(req: express.Request, res: express.Response) {
     const id = req.params.id;
+    usernameTable()
+      .where('id', id)
+      .then((user: UsernameI[]) => {
+        return user.length > 0 ?
+          res.status(200).send(user) :
+          res.status(404).send({ message: 'Username not found' });
 
-
-
-    return res.status(200).send(id);
+      })
+      .catch(() => {
+        return res.status(500).json({ message: 'Server error' });
+      });
   }
 
   update(req: express.Request, res: express.Response) {
