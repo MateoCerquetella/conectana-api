@@ -1,9 +1,9 @@
-import { UserI } from './user.model'
+import { UsernameI } from './username.model'
 
-export class UserController {
+export class UsernameController {
 
   login(req: any, res: any) {
-    const foo: UserI = {
+    const foo: UsernameI = {
       first_name: "mateo",
       last_name: "cerquetella"
     }
@@ -12,7 +12,7 @@ export class UserController {
   }
 
   create(req: any, res: any) {
-    const foo: UserI = {
+    const foo: UsernameI = {
       first_name: "mateo2",
       last_name: "cerquetella2"
     }
@@ -21,7 +21,7 @@ export class UserController {
   }
 
   findAll(req: any, res: any) {
-    const foo: UserI = {
+    const foo: UsernameI = {
       first_name: "mateo2",
       last_name: "cerquetella2"
     }
@@ -32,7 +32,7 @@ export class UserController {
   findOne(req: any, res: any) {
     const id = req.params.id;
 
-    const foo: UserI = {
+    const foo: UsernameI = {
       first_name: "mateo2",
       last_name: "cerquetella2"
     }
@@ -43,7 +43,7 @@ export class UserController {
   update(req: any, res: any) {
     const id = req.params.id;
 
-    const foo: UserI = {
+    const foo: UsernameI = {
       first_name: "mateo2",
       last_name: "cerquetella2"
     }
@@ -54,7 +54,7 @@ export class UserController {
   delete(req: any, res: any) {
     const id = req.params.id;
 
-    const foo: UserI = {
+    const foo: UsernameI = {
       first_name: "mateo2",
       last_name: "cerquetella2"
     }

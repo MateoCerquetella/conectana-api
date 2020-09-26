@@ -4,9 +4,10 @@ declare module NodeJS {
       parseBool: (txt: any) => boolean;
     };
     CONSTANTS: {
-      DATABASE_URL: string;
+      DATABASE_HOST: string;
       DATABASE_PASSWORD: string;
-      DATABASE_PORT: string;
+      DATABASE_NAME: string;
+      DATABASE_USER: string;
       PRODUCTION: boolean;
       PRODUCTION_DB: boolean;
     };
