@@ -1,10 +1,10 @@
 import * as express from 'express';
 import db from '../../database/db'
-import { ColaboratorI } from './colaborator.model'
+import { TagI } from './tag.model'
 
-const colaboratorTable = () => db<ColaboratorI>('colaborator');
+const colaboratorTable = () => db<TagI>('tag');
 
-export class ColaboratorController {
+export class TagController {
 
   login(req: express.Request, res: express.Response) {
 
@@ -21,8 +21,8 @@ export class ColaboratorController {
   findAll(req: express.Request, res: express.Response) {
     colaboratorTable()
       .select()
-      .then((colaborator: ColaboratorI[]) => {
-        return res.status(200).send(colaborator);
+      .then((tag: TagI[]) => {
+        return res.status(200).send(tag);
       })
       .catch(() => {
         return res.status(500).json({ message: 'Server error' });
@@ -33,10 +33,10 @@ export class ColaboratorController {
     const id = req.params.id;
     colaboratorTable()
       .where('id', id)
-      .then((colaborator: ColaboratorI[]) => {
-        return colaborator.length > 0 ?
-          res.status(200).send(colaborator) :
-          res.status(404).send({ message: 'Colaborator not found' });
+      .then((tag: TagI[]) => {
+        return tag.length > 0 ?
+          res.status(200).send(tag) :
+          res.status(404).send({ message: 'Tag not found' });
 
       })
       .catch(() => {
