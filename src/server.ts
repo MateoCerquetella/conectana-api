@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import colaboratorRoutes from './api/colaborator/colaborator.routes';
 import usernameRoutes from './api/username/username.routes';
 
 // Declare server
@@ -12,6 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 // Routing
+colaboratorRoutes(app);
 usernameRoutes(app);
 
 // Set the port
