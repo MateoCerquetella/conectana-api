@@ -6,12 +6,6 @@ const colaboratorTable = () => db<ColaboratorI>('colaborator');
 
 export class ColaboratorController {
 
-  login(req: express.Request, res: express.Response) {
-
-
-    return res.status(200).send();
-  }
-
   create(req: express.Request, res: express.Response) {
 
 
