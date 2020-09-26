@@ -3,7 +3,6 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import usernameRoutes from './api/username/username.routes';
 import db from './database/db'
-
 // Declare server
 const app = express();
 
@@ -12,14 +11,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-
-
-db('username')
-    .select('id')
-    .then((user) => {
-        console.log("anda");
-        console.log(user);
-    });
 // Routing
 usernameRoutes(app);
 
