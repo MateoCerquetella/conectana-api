@@ -2,12 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import usernameRoutes from './api/username/username.routes';
-import utils from './utils';
-
 import db from './database/db'
-// Declare global
-declare var global: any;
-global.utils = utils;
 
 // Declare server
 const app = express();
@@ -21,7 +16,7 @@ app.use(cors());
 
 db('username')
     .select('id')
-    .then((user) => { // Type of users is inferred as Pick<User, "id">[]
+    .then((user) => {
         console.log("anda");
         console.log(user);
     });

@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "build": "tsc --project ./",
-    "dev": "nodemon src/server.ts"
+    "dev": "nodemon -r dotenv/config src/server.ts"
   },
   "author": "",
   "license": "ISC",
