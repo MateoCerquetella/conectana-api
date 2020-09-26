@@ -9,7 +9,7 @@ export class TagController {
   create(req: express.Request, res: express.Response) {
     const tagTmp: TagI = req.body;
 
-    //Validation
+    //Validate request
     if (!tagTmp.name) {
       return res.status(400).send({
         message: 'El contenido no puede estar vacio.'
@@ -35,38 +35,65 @@ export class TagController {
       .then((tag: TagI[]) => {
         return res.status(200).send(tag);
       })
-      .catch(() => {
-        return res.status(500).json({ message: 'Server error' });
+      .catch((error) => {
+        return res.status(500).json({ message: 'Server error', messageError: error.detail });
       });
   }
 
   findOne(req: express.Request, res: express.Response) {
-    const id = req.params.id;
+    const tagTmp: TagI = req.body;
+    tagTmp.id = +req.params.id;
+
     tagTable()
-      .where('id', id)
+      .where({ id: tagTmp.id })
       .then((tag: TagI[]) => {
         return tag.length > 0 ?
           res.status(200).send(tag) :
-          res.status(404).send({ message: 'Tag not found' });
+          res.status(404).send({ message: 'Tag no encontrado' });
       })
-      .catch(() => {
-        return res.status(500).json({ message: 'Server error' });
+      .catch((error) => {
+        return res.status(500).json({ message: 'Server error', messageError: error.detail });
       });
   }
 
   update(req: express.Request, res: express.Response) {
-    const id = req.params.id;
+    const tagTmp: TagI = req.body;
+    tagTmp.id = +req.params.id;
 
+    //Validate request
+    if (!tagTmp.name) {
+      return res.status(400).send({
+        message: 'El contenido no puede estar vacio.'
+      });
+    }
 
-
-    return res.status(200).send();
+    tagTable()
+      .where({ id: tagTmp.id })
+      .update({ name: tagTmp.name })
+      .then((tag) => {
+        return tag > 0 ?
+          res.status(200).send({ message: 'Modificado con éxito' }) :
+          res.status(404).send({ message: 'Tag no encontrado' });
+      })
+      .catch((error) => {
+        return res.status(500).json({ message: 'Server error', messageError: error.detail });
+      });
   }
 
   delete(req: express.Request, res: express.Response) {
-    const id = req.params.id;
+    const tagTmp: TagI = req.body;
+    tagTmp.id = +req.params.id;
 
-
-
-    return res.status(200).send();
+    tagTable()
+      .where({ id: tagTmp.id })
+      .del()
+      .then((tag) => {
+        return tag > 0 ?
+          res.status(200).send({ message: 'Borrado con éxito' }) :
+          res.status(404).send({ message: 'Tag no encontrado' });
+      })
+      .catch((error) => {
+        return res.status(500).json({ message: 'Server error', messageError: error.detail });
+      });
   }
 }
