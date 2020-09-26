@@ -2,7 +2,7 @@ import * as express from 'express';
 import db from '../../database/db'
 import { TagI } from './tag.model'
 
-const tagTable = () => db<TagI>('tag');
+const table = () => db<TagI>('tag');
 
 export class TagController {
 
@@ -12,11 +12,11 @@ export class TagController {
     //Validate request
     if (!tagTmp.name) {
       return res.status(400).send({
-        message: 'El contenido no puede estar vacio.'
+        message: 'Falta contenido y/o no puede estar vacio.'
       });
     }
 
-    tagTable()
+    table()
       .insert(tagTmp)
       .then(() => {
         return res.status(200).send({ message: 'Creado con éxito' });
@@ -30,7 +30,7 @@ export class TagController {
   }
 
   findAll(req: express.Request, res: express.Response) {
-    tagTable()
+    table()
       .select()
       .then((tag: TagI[]) => {
         return res.status(200).send(tag);
@@ -44,7 +44,7 @@ export class TagController {
     const tagTmp: TagI = req.body;
     tagTmp.id = +req.params.id;
 
-    tagTable()
+    table()
       .where({ id: tagTmp.id })
       .then((tag: TagI[]) => {
         return tag.length > 0 ?
@@ -63,11 +63,11 @@ export class TagController {
     //Validate request
     if (!tagTmp.name) {
       return res.status(400).send({
-        message: 'El contenido no puede estar vacio.'
+        message: 'Falta contenido y/o no puede estar vacio.'
       });
     }
 
-    tagTable()
+    table()
       .where({ id: tagTmp.id })
       .update({ name: tagTmp.name })
       .then((tag) => {
@@ -81,11 +81,8 @@ export class TagController {
   }
 
   delete(req: express.Request, res: express.Response) {
-    const tagTmp: TagI = req.body;
-    tagTmp.id = +req.params.id;
-
-    tagTable()
-      .where({ id: tagTmp.id })
+    table()
+      .where({ id: +req.params.id })
       .del()
       .then((tag) => {
         return tag > 0 ?

@@ -2,7 +2,7 @@ import * as express from 'express';
 import db from '../../database/db'
 import { UsernameI } from './username.model'
 
-const usernameTable = () => db<UsernameI>('username');
+const table = () => db<UsernameI>('username');
 
 export class UsernameController {
 
@@ -19,7 +19,7 @@ export class UsernameController {
   }
 
   findAll(req: express.Request, res: express.Response) {
-    usernameTable()
+    table()
       .select()
       .then((user: UsernameI[]) => {
         return res.status(200).send(user);
@@ -31,7 +31,7 @@ export class UsernameController {
 
   findOne(req: express.Request, res: express.Response) {
     const id = req.params.id;
-    usernameTable()
+    table()
       .where('id', id)
       .then((user: UsernameI[]) => {
         return user.length > 0 ?
