@@ -53,7 +53,6 @@ export class UsernameController {
         return user.length > 0 ?
           res.status(200).send(user) :
           res.status(404).send({ message: 'Username not found' });
-
       })
       .catch(() => {
         return res.status(500).json({ message: 'Server error' });

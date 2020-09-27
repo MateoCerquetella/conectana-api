@@ -5,7 +5,7 @@ import { UsernameController } from './username.controller';
 const router = express.Router();
 const username = new UsernameController();
 
-export default function userRoutes(app: Express) {
+export default function usernameRoutes(app: Express) {
   router.get('/login', username.login);
   router.post('/', username.create);
   router.get('/', username.findAll);

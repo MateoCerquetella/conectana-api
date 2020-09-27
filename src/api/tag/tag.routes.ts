@@ -5,7 +5,7 @@ import { TagController } from './tag.controller';
 const router = express.Router();
 const tag = new TagController();
 
-export default function userRoutes(app: Express) {
+export default function tagRoutes(app: Express) {
   router.post('/', tag.create);
   router.get('/', tag.findAll);
   router.get('/:id', tag.findOne);

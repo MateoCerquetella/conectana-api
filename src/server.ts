@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import tagRoutes from './api/tag/tag.routes';
+import categoryRoutes from './api/category/category.routes';
 import colaboratorRoutes from './api/colaborator/colaborator.routes';
 import usernameRoutes from './api/username/username.routes';
 
@@ -15,6 +16,7 @@ app.use(cors());
 
 // Routing
 tagRoutes(app);
+categoryRoutes(app);
 colaboratorRoutes(app);
 usernameRoutes(app);
 

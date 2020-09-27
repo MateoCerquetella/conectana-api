@@ -5,7 +5,7 @@ import { ColaboratorController } from './colaborator.controller';
 const router = express.Router();
 const colaborator = new ColaboratorController();
 
-export default function userRoutes(app: Express) {
+export default function colaboratorRoutes(app: Express) {
   router.post('/', colaborator.create);
   router.get('/', colaborator.findAll);
   router.get('/:id', colaborator.findOne);
