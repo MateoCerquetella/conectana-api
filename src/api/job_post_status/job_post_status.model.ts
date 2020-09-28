@@ -1,4 +1,4 @@
-export interface RolI {
+export interface JobPostStatusI {
     id: number;
     name: string;
 }

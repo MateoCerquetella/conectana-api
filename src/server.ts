@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import rolRoutes from './api/rol/rol.routes';
+import jobPostStatusRoutes from './api/job_post_status/job_post_status.routes';
 import tagRoutes from './api/tag/tag.routes';
 import categoryRoutes from './api/category/category.routes';
 import colaboratorRoutes from './api/colaborator/colaborator.routes';
@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 // Routing
-rolRoutes(app);
+jobPostStatusRoutes(app);
 tagRoutes(app);
 categoryRoutes(app);
 colaboratorRoutes(app);
