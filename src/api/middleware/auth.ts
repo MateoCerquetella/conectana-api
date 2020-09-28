@@ -9,8 +9,9 @@ export function ensureAuthenticated(req: express.Request, res: express.Response,
             .send({ message: "Tu petición no tiene cabecera de autorización" });
     }
 
-    var token = req.headers.authorization.split(" ")[1];
-    var payload = jwt.decode(token, process.env.TOKEN_SECRET);
+    const token_secret: any = process.env.TOKEN_SECRET;
+    var token: string = req.headers.authorization.split(" ")[1];
+    var payload = jwt.decode(token, token_secret);
 
     if (payload === null) {
         return res
@@ -23,6 +24,6 @@ export function ensureAuthenticated(req: express.Request, res: express.Response,
             .status(401)
             .send({ message: "El token ha expirado" });
     }
-    // req.user = payload.id;
+
     next();
 }

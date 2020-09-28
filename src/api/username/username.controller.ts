@@ -1,5 +1,7 @@
 import * as express from 'express';
 import db from '../../database/db'
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { UsernameI } from './username.model'
 
 const table = () => db<UsernameI>('username');
@@ -7,8 +9,43 @@ const table = () => db<UsernameI>('username');
 export class UsernameController {
 
   login(req: express.Request, res: express.Response) {
-    //TODO
-    return res.status(200).send();
+    const usernameTmp: UsernameI = req.body;
+
+    // Validate request
+    if (!usernameTmp.username || !usernameTmp.password) {
+      return res.status(400).send({
+        message: 'Falta contenido en el cuerpo.'
+      });
+    }
+
+    table()
+      .where('username', usernameTmp.username)
+      .then((usernameRes: UsernameI[]) => {
+        console.log(usernameRes);
+
+        let username = usernameRes[0];
+        const resultPassword: Boolean = bcrypt.compareSync(usernameTmp.password, username.password);
+        if (resultPassword) {
+          let expiresIn = 24 * 60 * 60;
+          const accessToken = jwt.sign({ id: username[0].id }, process.env.TOKEN_SECRET || '', { expiresIn: expiresIn });
+          username.accessToken = accessToken;
+          username.expiresIn = expiresIn;
+          // req.user = dataUser.username;
+          return res.status(200).send(username);
+        } else {
+          //La contraseña es incorrecta
+          return res.status(409).send({ message: 'La contraseña es incorrecta' });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.received === 0) {
+          return res.status(400).send({ message: 'Usuario no encontrado.' });
+        }
+        return res.status(500).send({
+          message: 'Ha ocurrido un error al iniciar sesión.'
+        });
+      });
   }
 
   create(req: express.Request, res: express.Response) {

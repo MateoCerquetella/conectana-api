@@ -6,4 +6,6 @@ export interface UsernameI {
     id_colaborator: number;
     id_organization: number;
     cellphone: string;
+    accessToken?: string;
+    expiresIn?: number;
 }
