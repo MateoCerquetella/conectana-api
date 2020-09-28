@@ -21,24 +21,20 @@ export class UsernameController {
     table()
       .where('username', usernameTmp.username)
       .then((usernameRes: UsernameI[]) => {
-        console.log(usernameRes);
-
         let username = usernameRes[0];
         const resultPassword: Boolean = bcrypt.compareSync(usernameTmp.password, username.password);
         if (resultPassword) {
           let expiresIn = 24 * 60 * 60;
-          const accessToken = jwt.sign({ id: username[0].id }, process.env.TOKEN_SECRET || '', { expiresIn: expiresIn });
+          const accessToken = jwt.sign({ id: username.id }, process.env.TOKEN_SECRET || '', { expiresIn: expiresIn });
           username.accessToken = accessToken;
           username.expiresIn = expiresIn;
-          // req.user = dataUser.username;
           return res.status(200).send(username);
         } else {
-          //La contraseña es incorrecta
-          return res.status(409).send({ message: 'La contraseña es incorrecta' });
+          // Bad password
+          return res.status(409).send({ message: 'La contraseña es incorrecta.' });
         }
       })
       .catch((error) => {
-        console.log(error);
         if (error.received === 0) {
           return res.status(400).send({ message: 'Usuario no encontrado.' });
         }
@@ -52,23 +48,25 @@ export class UsernameController {
     const usernameTmp: UsernameI = req.body;
 
     //Validate request
-    if (!usernameTmp.username || !usernameTmp.password || !usernameTmp.email || !usernameTmp.id_colaborator || !usernameTmp.id_organization) {
+    if (!usernameTmp.username || !usernameTmp.password || !usernameTmp.email || !usernameTmp.id_colaborator) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'
       });
     }
 
-    table()
-      .insert(usernameTmp)
-      .then(() => {
-        return res.status(200).send({ message: 'Creado con éxito' });
-      })
-      .catch((error) => {
-        if (error.code === '23505') {
-          return res.status(409).send({ message: 'Ya existe el username' });
-        }
-        return res.status(500).json({ message: 'Server error', messageError: error.detail });
-      });
+    usernameTmp.password = bcrypt.hashSync(usernameTmp.password, 6),
+
+      table()
+        .insert(usernameTmp)
+        .then(() => {
+          return res.status(200).send({ message: 'Creado con éxito' });
+        })
+        .catch((error) => {
+          if (error.code === '23505') {
+            return res.status(409).send({ message: 'Ya existe el username' });
+          }
+          return res.status(500).json({ message: 'Server error', messageError: error.detail });
+        });
   }
 
   findAll(req: express.Request, res: express.Response) {
