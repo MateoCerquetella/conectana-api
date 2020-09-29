@@ -60,7 +60,7 @@ export function ensureAuthenticatedAndIsAdmin(req: express.Request, res: express
         .select('isAdmin')
         .then((user: Pick<IUsername, 'isAdmin'>[]) => {
             return !!user[0].isAdmin ? next() :
-                res.status(403).send({ message: 'No puedes acceder a este contenido' })
+                res.status(403).send({ message: 'No puedes acceder a este contenido' });
         })
         .catch(() => {
             return res.status(500).json({ message: 'Server error' });

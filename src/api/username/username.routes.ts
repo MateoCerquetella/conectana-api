@@ -8,11 +8,11 @@ const username = new UsernameController();
 
 export default function usernameRoutes(app: Express) {
   router.get('/login', username.login);
-  router.post('/', username.create);
-  router.get('/', username.findAll);
+  router.post('/', ensureAuthenticatedAndIsAdmin, username.create);
+  router.get('/', ensureAuthenticatedAndIsAdmin, username.findAll);
   router.get('/:id', ensureAuthenticatedAndIsAdmin, username.findOne);
-  router.put('/:id', username.update)
-  router.delete('/:id', username.delete);
+  router.put('/:id', ensureAuthenticatedAndIsAdmin, username.update)
+  router.delete('/:id', ensureAuthenticatedAndIsAdmin, username.delete);
 
   app.use('/username', router);
 };
