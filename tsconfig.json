@@ -7,6 +7,6 @@
     "esModuleInterop": true,
     "strict": true,
     "noImplicitAny": false,
-    "typeRoots": ["./src/typings/index.d.ts"]
+    "rootDirs": ["./src/typings/index.d.ts", "./node_modules/@types"]
   }
 }

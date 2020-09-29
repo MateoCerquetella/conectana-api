@@ -32,7 +32,7 @@ export function ensureAuthenticated(req: express.Request, res: express.Response,
 
     console.log("req es");
 
-    console.log(req.isAdmin);
+    console.log(req.username!);
 
     next();
 }
