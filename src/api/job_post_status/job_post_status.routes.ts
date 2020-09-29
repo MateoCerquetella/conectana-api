@@ -6,7 +6,7 @@ import { ensureAuthenticated } from '../middleware/auth';
 const router = express.Router();
 const job_post_status = new JobPostStatusController();
 
-export default function jpsRoutes(app: Express) {
+export default function jobPostStatusRoutes(app: Express) {
     router.post('/', job_post_status.create);
     router.get('/', job_post_status.findAll);
     router.get('/:id', job_post_status.findOne);

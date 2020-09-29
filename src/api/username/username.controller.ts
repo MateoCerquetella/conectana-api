@@ -54,19 +54,20 @@ export class UsernameController {
       });
     }
 
-    usernameTmp.password = bcrypt.hashSync(usernameTmp.password, 6),
+    usernameTmp.password = bcrypt.hashSync(usernameTmp.password, 6);
+    usernameTmp.isAdmin = false;
 
-      table()
-        .insert(usernameTmp)
-        .then(() => {
-          return res.status(200).send({ message: 'Creado con éxito' });
-        })
-        .catch((error) => {
-          if (error.code === '23505') {
-            return res.status(409).send({ message: 'Ya existe el username' });
-          }
-          return res.status(500).json({ message: 'Server error', messageError: error.detail });
-        });
+    table()
+      .insert(usernameTmp)
+      .then(() => {
+        return res.status(200).send({ message: 'Creado con éxito' });
+      })
+      .catch((error) => {
+        if (error.code === '23505') {
+          return res.status(409).send({ message: 'Ya existe el username' });
+        }
+        return res.status(500).json({ message: 'Server error', messageError: error.detail });
+      });
   }
 
   findAll(req: express.Request, res: express.Response) {
