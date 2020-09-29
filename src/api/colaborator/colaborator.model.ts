@@ -1,4 +1,4 @@
-export interface ColaboratorI {
+export interface IColaborator {
     id: number;
     first_name: string;
     last_name: string;

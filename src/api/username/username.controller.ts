@@ -2,14 +2,14 @@ import * as express from 'express';
 import db from '../../database/db'
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { UsernameI } from './username.model'
+import { IUsername } from './username.model'
 
-const table = () => db<UsernameI>('username');
+const table = () => db<IUsername>('username');
 
 export class UsernameController {
 
   login(req: express.Request, res: express.Response) {
-    const usernameTmp: UsernameI = req.body;
+    const usernameTmp: IUsername = req.body;
 
     // Validate request
     if (!usernameTmp.username || !usernameTmp.password) {
@@ -20,7 +20,7 @@ export class UsernameController {
 
     table()
       .where('username', usernameTmp.username)
-      .then((usernameRes: UsernameI[]) => {
+      .then((usernameRes: IUsername[]) => {
         let username = usernameRes[0];
         const resultPassword: Boolean = bcrypt.compareSync(usernameTmp.password, username.password);
         if (resultPassword) {
@@ -28,6 +28,9 @@ export class UsernameController {
           const accessToken = jwt.sign({ id: username.id }, process.env.TOKEN_SECRET || '', { expiresIn: expiresIn });
           username.accessToken = accessToken;
           username.expiresIn = expiresIn;
+          req.isAdmin = username.isAdmin;
+          console.log(username);
+
           return res.status(200).send(username);
         } else {
           // Bad password
@@ -45,7 +48,7 @@ export class UsernameController {
   }
 
   create(req: express.Request, res: express.Response) {
-    const usernameTmp: UsernameI = req.body;
+    const usernameTmp: IUsername = req.body;
 
     //Validate request
     if (!usernameTmp.username || !usernameTmp.password || !usernameTmp.email || !usernameTmp.id_colaborator) {
@@ -73,7 +76,7 @@ export class UsernameController {
   findAll(req: express.Request, res: express.Response) {
     table()
       .select()
-      .then((user: UsernameI[]) => {
+      .then((user: IUsername[]) => {
         return res.status(200).send(user);
       })
       .catch(() => {
@@ -85,7 +88,7 @@ export class UsernameController {
     const id = req.params.id;
     table()
       .where('id', id)
-      .then((user: UsernameI[]) => {
+      .then((user: IUsername[]) => {
         return user.length > 0 ?
           res.status(200).send(user) :
           res.status(404).send({ message: 'Username not found' });
@@ -96,7 +99,7 @@ export class UsernameController {
   }
 
   update(req: express.Request, res: express.Response) {
-    const usernameTmp: UsernameI = req.body;
+    const usernameTmp: IUsername = req.body;
     usernameTmp.id = +req.params.id;
 
     table()

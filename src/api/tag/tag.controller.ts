@@ -1,13 +1,13 @@
 import * as express from 'express';
 import db from '../../database/db'
-import { TagI } from './tag.model'
+import { ITag } from './tag.model'
 
-const table = () => db<TagI>('tag');
+const table = () => db<ITag>('tag');
 
 export class TagController {
 
   create(req: express.Request, res: express.Response) {
-    const tagTmp: TagI = req.body;
+    const tagTmp: ITag = req.body;
 
     //Validate request
     if (!tagTmp.name) {
@@ -32,7 +32,7 @@ export class TagController {
   findAll(req: express.Request, res: express.Response) {
     table()
       .select()
-      .then((tag: TagI[]) => {
+      .then((tag: ITag[]) => {
         return res.status(200).send(tag);
       })
       .catch((error) => {
@@ -41,12 +41,12 @@ export class TagController {
   }
 
   findOne(req: express.Request, res: express.Response) {
-    const tagTmp: TagI = req.body;
+    const tagTmp: ITag = req.body;
     tagTmp.id = +req.params.id;
 
     table()
       .where({ id: tagTmp.id })
-      .then((tag: TagI[]) => {
+      .then((tag: ITag[]) => {
         return tag.length > 0 ?
           res.status(200).send(tag) :
           res.status(404).send({ message: 'Tag no encontrado' });
@@ -57,7 +57,7 @@ export class TagController {
   }
 
   update(req: express.Request, res: express.Response) {
-    const tagTmp: TagI = req.body;
+    const tagTmp: ITag = req.body;
     tagTmp.id = +req.params.id;
 
     //Validate request

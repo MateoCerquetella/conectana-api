@@ -1,12 +1,12 @@
 import * as express from "express";
 import db from "../../database/db";
-import { JobPostStatusI } from "./job_post_status.model";
+import { IJobPostStatus } from "./job_post_status.model";
 
-const table = () => db<JobPostStatusI>("job_post_status");
+const table = () => db<IJobPostStatus>("job_post_status");
 
 export class JobPostStatusController {
   create(req: express.Request, res: express.Response) {
-    const job_post_statusTmp: JobPostStatusI = req.body;
+    const job_post_statusTmp: IJobPostStatus = req.body;
 
     //Validate request
     if (!job_post_statusTmp.name) {
@@ -33,7 +33,7 @@ export class JobPostStatusController {
   findAll(req: express.Request, res: express.Response) {
     table()
       .select()
-      .then((job_post_status: JobPostStatusI[]) => {
+      .then((job_post_status: IJobPostStatus[]) => {
         return res.status(200).send(job_post_status);
       })
       .catch((error) => {
@@ -44,12 +44,12 @@ export class JobPostStatusController {
   }
 
   findOne(req: express.Request, res: express.Response) {
-    const job_post_statusTmp: JobPostStatusI = req.body;
+    const job_post_statusTmp: IJobPostStatus = req.body;
     job_post_statusTmp.id = +req.params.id;
 
     table()
       .where({ id: job_post_statusTmp.id })
-      .then((job_post_status: JobPostStatusI[]) => {
+      .then((job_post_status: IJobPostStatus[]) => {
         return job_post_status.length > 0
           ? res.status(200).send(job_post_status)
           : res.status(404).send({ message: "Job post status no encontrado" });
@@ -62,7 +62,7 @@ export class JobPostStatusController {
   }
 
   update(req: express.Request, res: express.Response) {
-    const job_post_statusTmp: JobPostStatusI = req.body;
+    const job_post_statusTmp: IJobPostStatus = req.body;
     job_post_statusTmp.id = +req.params.id;
 
     //Validate request

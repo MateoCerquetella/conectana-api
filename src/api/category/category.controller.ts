@@ -1,13 +1,13 @@
 import * as express from 'express';
 import db from '../../database/db'
-import { CategoryI } from './category.model'
+import { ICategory } from './category.model'
 
-const table = () => db<CategoryI>('category');
+const table = () => db<ICategory>('category');
 
 export class CategoryController {
 
   create(req: express.Request, res: express.Response) {
-    const categoryTmp: CategoryI = req.body;
+    const categoryTmp: ICategory = req.body;
 
     //Validate request
     if (!categoryTmp.name) {
@@ -32,7 +32,7 @@ export class CategoryController {
   findAll(req: express.Request, res: express.Response) {
     table()
       .select()
-      .then((category: CategoryI[]) => {
+      .then((category: ICategory[]) => {
         return res.status(200).send(category);
       })
       .catch((error) => {
@@ -41,12 +41,12 @@ export class CategoryController {
   }
 
   findOne(req: express.Request, res: express.Response) {
-    const categoryTmp: CategoryI = req.body;
+    const categoryTmp: ICategory = req.body;
     categoryTmp.id = +req.params.id;
 
     table()
       .where({ id: categoryTmp.id })
-      .then((category: CategoryI[]) => {
+      .then((category: ICategory[]) => {
         return category.length > 0 ?
           res.status(200).send(category) :
           res.status(404).send({ message: 'Categoria no encontrado' });
@@ -57,7 +57,7 @@ export class CategoryController {
   }
 
   update(req: express.Request, res: express.Response) {
-    const categoryTmp: CategoryI = req.body;
+    const categoryTmp: ICategory = req.body;
     categoryTmp.id = +req.params.id;
 
     //Validate request

@@ -1,4 +1,4 @@
-export interface JobPostStatusI {
+export interface IJobPostStatus {
     id: number;
     name: string;
 }

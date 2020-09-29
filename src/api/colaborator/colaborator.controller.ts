@@ -1,13 +1,13 @@
 import * as express from 'express';
 import db from '../../database/db'
-import { ColaboratorI } from './colaborator.model'
+import { IColaborator } from './colaborator.model'
 
-const table = () => db<ColaboratorI>('colaborator');
+const table = () => db<IColaborator>('colaborator');
 
 export class ColaboratorController {
 
   create(req: express.Request, res: express.Response) {
-    const colaboratorTmp: ColaboratorI = req.body;
+    const colaboratorTmp: IColaborator = req.body;
 
     //Validate request
     if (!colaboratorTmp.first_name || !colaboratorTmp.last_name || !colaboratorTmp.date_birth || !colaboratorTmp.tag_id) {
@@ -32,7 +32,7 @@ export class ColaboratorController {
   findAll(req: express.Request, res: express.Response) {
     table()
       .select()
-      .then((colaborator: ColaboratorI[]) => {
+      .then((colaborator: IColaborator[]) => {
         return res.status(200).send(colaborator);
       })
       .catch(() => {
@@ -44,7 +44,7 @@ export class ColaboratorController {
     const id = req.params.id;
     table()
       .where('id', id)
-      .then((colaborator: ColaboratorI[]) => {
+      .then((colaborator: IColaborator[]) => {
         return colaborator.length > 0 ?
           res.status(200).send(colaborator) :
           res.status(404).send({ message: 'Colaborator not found' });
@@ -56,7 +56,7 @@ export class ColaboratorController {
   }
 
   update(req: express.Request, res: express.Response) {
-    const colaboratorTmp: ColaboratorI = req.body;
+    const colaboratorTmp: IColaborator = req.body;
     colaboratorTmp.id = +req.params.id;
 
     table()
