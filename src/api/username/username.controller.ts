@@ -28,9 +28,6 @@ export class UsernameController {
           const accessToken = jwt.sign({ id: username.id }, process.env.TOKEN_SECRET || '', { expiresIn: expiresIn });
           username.accessToken = accessToken;
           username.expiresIn = expiresIn;
-          req.username = username;
-          console.log(username);
-
           return res.status(200).send(username);
         } else {
           // Bad password
