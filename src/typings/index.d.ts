@@ -1,4 +1,4 @@
-import { IUsername } from '../username/username.model'
+import { IUsername } from '../api/username/username.model'
 
 declare global {
     namespace Express {
