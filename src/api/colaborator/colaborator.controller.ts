@@ -60,10 +60,6 @@ export class ColaboratorController {
   update(req: express.Request, res: express.Response) {
     const colaboratorTmp: IColaborator = req.body;
 
-
-    // select * from "colaborator" 
-    // where "id" in (select "id_colaborator" from "username" where "username"."id" = 12)
-
     table()
       .select()
       .whereIn('id', function () {
@@ -78,8 +74,6 @@ export class ColaboratorController {
           res.status(404).send({ message: 'Colaborador no encontrado' });
       })
       .catch((error) => {
-        console.log(error);
-
         return res.status(500).json({ message: 'Server error', messageError: error.detail });
       });
   }
