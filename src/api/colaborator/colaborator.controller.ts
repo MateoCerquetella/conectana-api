@@ -57,10 +57,9 @@ export class ColaboratorController {
 
   update(req: express.Request, res: express.Response) {
     const colaboratorTmp: IColaborator = req.body;
-    colaboratorTmp.id = +req.params.id;
 
     table()
-      .where({ id: colaboratorTmp.id })
+      .where({ id: +req.params.id })
       .update(colaboratorTmp)
       .then((colaborator: number) => {
         return colaborator > 0 ?
@@ -68,6 +67,8 @@ export class ColaboratorController {
           res.status(404).send({ message: 'Colaborador no encontrado' });
       })
       .catch((error) => {
+        console.log(error);
+
         return res.status(500).json({ message: 'Server error', messageError: error.detail });
       });
   }

@@ -58,7 +58,6 @@ export class TagController {
 
   update(req: express.Request, res: express.Response) {
     const tagTmp: ITag = req.body;
-    tagTmp.id = +req.params.id;
 
     //Validate request
     if (!tagTmp.name) {
@@ -68,7 +67,7 @@ export class TagController {
     }
 
     table()
-      .where({ id: tagTmp.id })
+      .where({ id: +req.params.id })
       .update({ name: tagTmp.name })
       .then((tag: number) => {
         return tag > 0 ?

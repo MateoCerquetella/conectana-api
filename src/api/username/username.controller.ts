@@ -97,10 +97,9 @@ export class UsernameController {
 
   update(req: express.Request, res: express.Response) {
     const usernameTmp: IUsername = req.body;
-    usernameTmp.id = +req.params.id;
 
     table()
-      .where({ id: usernameTmp.id })
+      .where({ id: +req.params.id })
       .update(usernameTmp)
       .then((username: number) => {
         return username > 0 ?

@@ -8,7 +8,7 @@ const username = new UsernameController();
 
 export default function usernameRoutes(app: Express) {
   router.get('/login', username.login);
-  router.post('/', ensureAuthenticatedAndIsAdmin, username.create);
+  router.post('/', username.create);
   router.get('/', ensureAuthenticatedAndIsAdmin, username.findAll);
   router.get('/:id', ensureAuthenticatedAndIsAdmin, username.findOne);
   router.put('/:id', ensureAuthenticatedAndIsAdmin, username.update)

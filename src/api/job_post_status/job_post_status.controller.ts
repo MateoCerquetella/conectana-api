@@ -63,7 +63,6 @@ export class JobPostStatusController {
 
   update(req: express.Request, res: express.Response) {
     const job_post_statusTmp: IJobPostStatus = req.body;
-    job_post_statusTmp.id = +req.params.id;
 
     //Validate request
     if (!job_post_statusTmp.name) {
@@ -73,7 +72,7 @@ export class JobPostStatusController {
     }
 
     table()
-      .where({ id: job_post_statusTmp.id })
+      .where({ id: +req.params.id })
       .update({ name: job_post_statusTmp.name })
       .then((job_post_status: number) => {
         return job_post_status > 0
