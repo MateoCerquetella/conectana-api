@@ -58,7 +58,6 @@ export class CategoryController {
 
   update(req: express.Request, res: express.Response) {
     const categoryTmp: ICategory = req.body;
-    categoryTmp.id = +req.params.id;
 
     //Validate request
     if (!categoryTmp.name) {
@@ -68,7 +67,7 @@ export class CategoryController {
     }
 
     table()
-      .where({ id: categoryTmp.id })
+      .where({ id: +req.params.id })
       .update({ name: categoryTmp.name })
       .then((category: number) => {
         return category > 0 ?

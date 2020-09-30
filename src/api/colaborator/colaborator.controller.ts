@@ -1,8 +1,10 @@
 import * as express from 'express';
 import db from '../../database/db'
+import { IUsername } from '../username/username.model';
 import { IColaborator } from './colaborator.model'
 
 const table = () => db<IColaborator>('colaborator');
+
 
 export class ColaboratorController {
 
@@ -58,8 +60,17 @@ export class ColaboratorController {
   update(req: express.Request, res: express.Response) {
     const colaboratorTmp: IColaborator = req.body;
 
+
+    // select * from "colaborator" 
+    // where "id" in (select "id_colaborator" from "username" where "username"."id" = 12)
+
     table()
-      .where({ id: +req.params.id })
+      .select()
+      .whereIn('id', function () {
+        this.select('id_colaborator')
+          .from<IUsername>('username')
+          .where('id', req.params.id);
+      })
       .update(colaboratorTmp)
       .then((colaborator: number) => {
         return colaborator > 0 ?
