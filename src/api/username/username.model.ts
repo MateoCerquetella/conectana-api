@@ -2,6 +2,7 @@ export interface IUsername {
     id: number;
     username: string;
     email: string;
+    photo_url: string;
     password: string;
     id_colaborator: number;
     id_organization: number;
