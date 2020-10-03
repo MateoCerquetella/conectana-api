@@ -79,9 +79,9 @@ export class ColaboratorController {
       });
   }
 
-  delete(req: express.Request, res: express.Response) {
+  delete(req: RequestWithUserId, res: express.Response) {
     table()
-      .where({ id: +req.params.id })
+      .where({ id: req.userId })
       .del()
       .then((colaborator: number) => {
         return colaborator > 0 ?
