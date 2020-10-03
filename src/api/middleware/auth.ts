@@ -16,6 +16,7 @@ export function ensureAuthenticated(req: express.Request, res: express.Response,
     const token_secret: any = process.env.TOKEN_SECRET;
     var token: string = req.headers.authorization.split(' ')[1];
     var payload = jwt.decode(token, token_secret);
+    console.log(payload);
 
     if (payload === null) {
         return res
@@ -28,6 +29,12 @@ export function ensureAuthenticated(req: express.Request, res: express.Response,
             .status(401)
             .send({ message: 'El token ha expirado' });
     }
+    // @ts-ignore
+    req.username?.id = payload.id;
+    // @ts-ignore
+    console.log(req.username);
+
+
     next();
 }
 

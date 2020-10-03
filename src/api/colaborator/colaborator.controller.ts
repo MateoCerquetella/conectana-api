@@ -65,7 +65,7 @@ export class ColaboratorController {
       .whereIn('id', function () {
         this.select('id_colaborator')
           .from<IUsername>('username')
-          .where('id', req.params.id);
+          .where('id', 12);
       })
       .update(colaboratorTmp)
       .then((colaborator: number) => {

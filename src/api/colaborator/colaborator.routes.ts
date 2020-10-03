@@ -10,7 +10,7 @@ export default function colaboratorRoutes(app: Express) {
   router.post('/', colaborator.create);
   router.get('/', colaborator.findAll);
   router.get('/:id', colaborator.findOne);
-  router.put('/:id', ensureAuthenticated, colaborator.update)
+  router.put('/', ensureAuthenticated, colaborator.update)
   router.delete('/:id', ensureAuthenticated, colaborator.delete);
 
   app.use('/colaborator', router);
