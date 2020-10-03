@@ -4,14 +4,14 @@ import { ensureAuthenticated } from '../middleware/auth'
 import { OrganizationEmployeeController } from './organization_employee.controller'
 
 const router = express.Router()
-const organization = new OrganizationEmployeeController()
+const organizationEmployee = new OrganizationEmployeeController()
 
 export default function organizationEmployeeRoutes(app: Express) {
-  router.post('/', organization.create)
-  router.get('/', organization.findAll)
-  router.get('/:id', organization.findOne)
-  router.put('/', ensureAuthenticated, organization.update)
-  router.delete('/', ensureAuthenticated, organization.delete)
+  router.post('/', organizationEmployee.create)
+  router.get('/', organizationEmployee.findAll)
+  router.get('/:id', organizationEmployee.findOne)
+  router.put('/', ensureAuthenticated, organizationEmployee.update)
+  router.delete('/', ensureAuthenticated, organizationEmployee.delete)
 
   app.use('/organizationEmployee', router)
 }
