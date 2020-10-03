@@ -12,7 +12,7 @@ export class OrganizationEmployeeController {
     const organizationEmployeeTmp: IOrganizationEmployee = req.body
 
     //Validate request
-    if (!organizationEmployeeTmp.organization_id || !organizationEmployeeTmp.username_id) {
+    if (!organizationEmployeeTmp.organization_id || !organizationEmployeeTmp.colaborator_id) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'
       })
