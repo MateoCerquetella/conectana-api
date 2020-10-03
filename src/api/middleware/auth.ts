@@ -35,7 +35,7 @@ export function ensureAuthenticated(req: RequestWithUserId, res: express.Respons
 	next();
 }
 
-export function ensureAuthenticatedAndIsAdmin(req: express.Request, res: express.Response, next: express.NextFunction) {
+export function ensureAuthenticatedAndIsAdmin(req: RequestWithUserId, res: express.Response, next: express.NextFunction) {
 	if (!req.headers.authorization) {
 		return res
 			.status(403)
@@ -57,6 +57,8 @@ export function ensureAuthenticatedAndIsAdmin(req: express.Request, res: express
 			.status(401)
 			.send({ message: 'El token ha expirado' });
 	}
+
+	req.userId = payload.id;
 
 	//Check if it's admin
 	table()

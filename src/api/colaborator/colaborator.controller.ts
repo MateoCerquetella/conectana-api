@@ -1,4 +1,5 @@
 import * as express from 'express';
+import { RequestWithUserId } from '../../@types';
 import db from '../../database/db'
 import { IUsername } from '../username/username.model';
 import { IColaborator } from './colaborator.model'
@@ -57,7 +58,7 @@ export class ColaboratorController {
       });
   }
 
-  update(req: express.Request, res: express.Response) {
+  update(req: RequestWithUserId, res: express.Response) {
     const colaboratorTmp: IColaborator = req.body;
 
     table()
@@ -65,7 +66,7 @@ export class ColaboratorController {
       .whereIn('id', function () {
         this.select('id_colaborator')
           .from<IUsername>('username')
-          .where('id', 12);
+          .where('id', req.userId);
       })
       .update(colaboratorTmp)
       .then((colaborator: number) => {
