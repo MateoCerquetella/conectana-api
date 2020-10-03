@@ -1,9 +1,5 @@
-import { IUsername } from '../api/username/username.model'
+import * as express from 'express';
 
-declare global {
-    namespace Express {
-        interface Request {
-            username?: IUsername;
-        }
-    }
+interface RequestWithUserId extends express.Request {
+    userId?: number;
 }
