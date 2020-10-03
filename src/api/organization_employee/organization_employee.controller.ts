@@ -2,31 +2,30 @@ import * as express from 'express'
 import { RequestWithUserId } from '../../@types'
 import db from '../../database/db'
 import { IUsername } from '../username/username.model'
-import { IColaborator } from './colaborator.model'
+import { IOrganizationEmployee } from './organization_employee.model'
 
-const table = () => db<IColaborator>('colaborator')
+const table = () => db<IOrganizationEmployee>('organization_employee')
 
-
-export class ColaboratorController {
+export class OrganizationEmployeeController {
 
   create(req: express.Request, res: express.Response) {
-    const colaboratorTmp: IColaborator = req.body
+    const organizationEmployeeTmp: IOrganizationEmployee = req.body
 
     //Validate request
-    if (!colaboratorTmp.first_name || !colaboratorTmp.last_name || !colaboratorTmp.date_birth || !colaboratorTmp.tag_id) {
+    if (!organizationEmployeeTmp.organization_id || !organizationEmployeeTmp.username_id) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'
       })
     }
 
     table()
-      .insert(colaboratorTmp)
+      .insert(organizationEmployeeTmp)
       .then(() => {
         return res.status(200).send({ message: 'Creado con éxito' })
       })
       .catch((error) => {
         if (error.code === '23505') {
-          return res.status(409).send({ message: 'Ya existe el colaborador' })
+          return res.status(409).send({ message: 'Ya existe la organización empleado' })
         }
         return res.status(500).json({ message: 'Server error', messageError: error.detail })
       })
@@ -35,8 +34,8 @@ export class ColaboratorController {
   findAll(req: express.Request, res: express.Response) {
     table()
       .select()
-      .then((colaborator: IColaborator[]) => {
-        return res.status(200).send(colaborator)
+      .then((organizationEmployee: IOrganizationEmployee[]) => {
+        return res.status(200).send(organizationEmployee)
       })
       .catch(() => {
         return res.status(500).json({ message: 'Server error' })
@@ -47,10 +46,11 @@ export class ColaboratorController {
     const id = req.params.id
     table()
       .where('id', id)
-      .then((colaborator: IColaborator[]) => {
-        return colaborator.length > 0 ?
-          res.status(200).send(colaborator) :
-          res.status(404).send({ message: 'Colaborator not found' })
+      .then((organizationEmployee: IOrganizationEmployee[]) => {
+        return organizationEmployee.length > 0 ?
+          res.status(200).send(organizationEmployee) :
+          res.status(404).send({ message: 'Organización empleado no encontrada' })
+
       })
       .catch(() => {
         return res.status(500).json({ message: 'Server error' })
@@ -58,20 +58,20 @@ export class ColaboratorController {
   }
 
   update(req: RequestWithUserId, res: express.Response) {
-    const colaboratorTmp: IColaborator = req.body
+    const organizationEmployeeTmp: IOrganizationEmployee = req.body
 
     table()
       .select()
       .whereIn('id', function () {
-        this.select('id_colaborator')
+        this.select('id_organizationEmployee')
           .from<IUsername>('username')
           .where('id', req.userId)
       })
-      .update(colaboratorTmp)
-      .then((colaborator: number) => {
-        return colaborator > 0 ?
+      .update(organizationEmployeeTmp)
+      .then((organizationEmployee: number) => {
+        return organizationEmployee > 0 ?
           res.status(200).send({ message: 'Modificado con éxito' }) :
-          res.status(404).send({ message: 'Colaborador no encontrado' })
+          res.status(404).send({ message: 'Organización empleado no encontrada' })
       })
       .catch((error) => {
         return res.status(500).json({ message: 'Server error', messageError: error.detail })
@@ -82,10 +82,10 @@ export class ColaboratorController {
     table()
       .where({ id: req.userId })
       .del()
-      .then((colaborator: number) => {
-        return colaborator > 0 ?
+      .then((organizationEmployee: number) => {
+        return organizationEmployee > 0 ?
           res.status(200).send({ message: 'Borrado con éxito' }) :
-          res.status(404).send({ message: 'Colaborador no encontrado' })
+          res.status(404).send({ message: 'Organización empleado no encontrada' })
       })
       .catch((error) => {
         return res.status(500).json({ message: 'Server error', messageError: error.detail })
