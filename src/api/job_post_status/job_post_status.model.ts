@@ -1,4 +1,3 @@
-export interface IJobPostStatus {
-    id: number;
-    name: string;
+export type IJobPostStatus = BaseTable & {
+    name: string
 }
