@@ -6,6 +6,7 @@ import tagRoutes from './api/tag/tag.routes';
 import categoryRoutes from './api/category/category.routes';
 import colaboratorRoutes from './api/colaborator/colaborator.routes';
 import usernameRoutes from './api/username/username.routes';
+import organizationRoutes from './api/organization/organization.routes';
 
 // Declare server
 const app = express();
@@ -20,6 +21,7 @@ jobPostStatusRoutes(app);
 tagRoutes(app);
 categoryRoutes(app);
 colaboratorRoutes(app);
+organizationRoutes(app);
 usernameRoutes(app);
 
 // Set the port
