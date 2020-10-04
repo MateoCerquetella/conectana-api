@@ -5,12 +5,14 @@ import routing from './routing'
 
 // Declare server
 const app = express()
-routing(app)
 
 // CORS configuration
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
+
+// Routing
+routing(app)
 
 // Set the port
 app.set('port', process.env.PORT || 3000)
