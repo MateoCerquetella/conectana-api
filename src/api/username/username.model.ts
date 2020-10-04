@@ -1,5 +1,4 @@
 export type IUsername = BaseTable & {
-    id?: number
     username: string
     email: string
     photo_url: string

@@ -1,5 +1,4 @@
 export type IPostComment = BaseTable & {
-    id?: number
     post_id: number
     username_id: number
     text: string
