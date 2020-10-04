@@ -2,15 +2,14 @@ import * as express from 'express'
 import db from '../../database/db'
 import { IJobPostStatus } from './job_post_status.model'
 
-const table = () => db<IJobPostStatus>('jobPostStatus')
+const table = () => db<IJobPostStatus>('job_post_status')
 
 export class JobPostStatusController {
   create(req: express.Request, res: express.Response) {
     const jobPostStatusTmp: IJobPostStatus = req.body
-    console.log(req.body)
 
     //Validate request
-    if (!jobPostStatusTmp.name || undefined) {
+    if (!jobPostStatusTmp.name) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.',
       })

@@ -1,4 +1,5 @@
 export type IOrganization = BaseTable & {
+    id?: number
     company_name: string
     what_we_do: string
     mision: string
