@@ -8,6 +8,7 @@ import usernameRoutes from '../api/username/username.routes'
 import jobPostPostulationRoutes from '../api/job_post_postulation/job_post_postulation.routes'
 import jobPostRoutes from '../api/job_post/job_post.routes'
 import postCommentRoutes from '../api/post_comment/post_comment.routes'
+import userFollowRoutes from '../api/user_follow/user_follow.routes'
 
 export default (app: Express) => {
   jobPostStatusRoutes(app)
@@ -19,4 +20,5 @@ export default (app: Express) => {
   categoryRoutes(app)
   colaboratorRoutes(app)
   usernameRoutes(app)
+  userFollowRoutes(app)
 }
