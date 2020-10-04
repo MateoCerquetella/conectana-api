@@ -7,6 +7,7 @@ import colaboratorRoutes from '../api/colaborator/colaborator.routes'
 import usernameRoutes from '../api/username/username.routes'
 import jobPostPostulationRoutes from '../api/job_post_postulation/job_post_postulation.routes'
 import jobPostRoutes from '../api/job_post/job_post.routes'
+import postCommentRoutes from '../api/post_comment/post_comment.routes'
 
 export default (app: Express) => {
   jobPostStatusRoutes(app)
@@ -14,6 +15,7 @@ export default (app: Express) => {
   jobPostPostulationRoutes(app)
   tagRoutes(app)
   postRoutes(app)
+  postCommentRoutes(app)
   categoryRoutes(app)
   colaboratorRoutes(app)
   usernameRoutes(app)
