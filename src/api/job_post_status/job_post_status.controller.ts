@@ -7,9 +7,10 @@ const table = () => db<IJobPostStatus>('jobPostStatus')
 export class JobPostStatusController {
   create(req: express.Request, res: express.Response) {
     const jobPostStatusTmp: IJobPostStatus = req.body
+    console.log(req.body)
 
     //Validate request
-    if (!jobPostStatusTmp.name) {
+    if (!jobPostStatusTmp.name || undefined) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.',
       })
