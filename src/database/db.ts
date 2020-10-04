@@ -1,6 +1,4 @@
-import knex from 'knex';
-import dotenv from 'dotenv';
-dotenv.config();
+import knex from 'knex'
 
 export default knex({
     client: 'pg',
@@ -12,4 +10,4 @@ export default knex({
         charset: 'utf8'
     },
     acquireConnectionTimeout: 10000,
-});
+})

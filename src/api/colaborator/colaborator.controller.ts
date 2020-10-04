@@ -1,5 +1,5 @@
 import * as express from 'express'
-import { RequestWithUserId } from '../../@types'
+import { RequestWithUserId, RouteCallback } from '../../@types'
 import db from '../../database/db'
 import { IUsername } from '../username/username.model'
 import { IColaborator } from './colaborator.model'
@@ -9,7 +9,7 @@ const table = () => db<IColaborator>('colaborator')
 
 export class ColaboratorController {
 
-  create(req: express.Request, res: express.Response) {
+  create: RouteCallback = function (req, res) {
     const colaboratorTmp: IColaborator = req.body
 
     //Validate request
@@ -32,7 +32,7 @@ export class ColaboratorController {
       })
   }
 
-  findAll(req: express.Request, res: express.Response) {
+  findAll: RouteCallback = function (req, res) {
     table()
       .select()
       .then((colaborator: IColaborator[]) => {
@@ -43,7 +43,7 @@ export class ColaboratorController {
       })
   }
 
-  findOne(req: express.Request, res: express.Response) {
+  findOne: RouteCallback = function (req, res) {
     const id = req.params.id
     table()
       .where('id', id)

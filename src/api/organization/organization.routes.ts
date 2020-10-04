@@ -1,16 +1,15 @@
-import express from 'express'
-import { isAuth } from '../middleware/auth'
+import express, { RequestHandler } from 'express'
 import { OrganizationController } from './organization.controller'
 
 const router = express.Router()
 const organization = new OrganizationController()
 
 export default function organizationRoutes(app: express.Express) {
-  router.post('/', organization.create)
-  router.get('/', organization.findAll)
-  router.get('/:id', organization.findOne)
-  router.put('/', isAuth, organization.update)
-  router.delete('/', isAuth, organization.delete)
+  router.post('/', organization.create as RequestHandler)
+  router.get('/', organization.findAll as RequestHandler)
+  router.get('/:id', organization.findOne as RequestHandler)
+  router.put('/', organization.update as RequestHandler)
+  router.delete('/', organization.delete as RequestHandler)
 
   app.use('/organization', router)
 }

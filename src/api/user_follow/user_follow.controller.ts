@@ -1,5 +1,5 @@
 import * as express from 'express'
-import { RequestWithUserId } from '../../@types'
+import { RequestWithUserId, RouteCallback } from '../../@types'
 import db from '../../database/db'
 import { IUserFollow } from './user_follow.model'
 
@@ -7,7 +7,7 @@ const table = () => db<IUserFollow>('user_follow')
 
 export class UserFollowController {
 
-  create(req: express.Request, res: express.Response) {
+  create: RouteCallback = function (req, res) {
     const userFollowTmp: IUserFollow = req.body
 
     //Validate request
@@ -30,7 +30,7 @@ export class UserFollowController {
       })
   }
 
-  findAll(req: express.Request, res: express.Response) {
+  findAll: RouteCallback = function (req, res) {
     table()
       .select()
       .then((userFollow: IUserFollow[]) => {
@@ -41,7 +41,7 @@ export class UserFollowController {
       })
   }
 
-  findOne(req: express.Request, res: express.Response) {
+  findOne: RouteCallback = function (req, res) {
     const id = req.params.id
     table()
       .where('id', id)
@@ -56,7 +56,7 @@ export class UserFollowController {
       })
   }
 
-  update(req: express.Request, res: express.Response) {
+  update: RouteCallback = function (req, res) {
     const userFollowTmp: IUserFollow = req.body
 
     table()

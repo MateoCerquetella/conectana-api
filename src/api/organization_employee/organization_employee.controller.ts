@@ -8,7 +8,7 @@ const table = () => db<IOrganizationEmployee>('organization_employee')
 
 export class OrganizationEmployeeController {
 
-  create(req: express.Request, res: express.Response) {
+  create: RouteCallback = function (req, res) {
     const organizationEmployeeTmp: IOrganizationEmployee = req.body
 
     //Validate request
@@ -31,7 +31,7 @@ export class OrganizationEmployeeController {
       })
   }
 
-  findAll(req: express.Request, res: express.Response) {
+  findAll: RouteCallback = function (req, res) {
     table()
       .select()
       .then((organizationEmployee: IOrganizationEmployee[]) => {
@@ -42,7 +42,7 @@ export class OrganizationEmployeeController {
       })
   }
 
-  findOne(req: express.Request, res: express.Response) {
+  findOne: RouteCallback = function (req, res) {
     const id = req.params.id
     table()
       .where('id', id)
