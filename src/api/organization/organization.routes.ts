@@ -1,5 +1,5 @@
 import express from 'express'
-import { ensureAuthenticated } from '../middleware/auth'
+import { isAuth } from '../middleware/auth'
 import { OrganizationController } from './organization.controller'
 
 const router = express.Router()
@@ -9,8 +9,8 @@ export default function organizationRoutes(app: express.Express) {
   router.post('/', organization.create)
   router.get('/', organization.findAll)
   router.get('/:id', organization.findOne)
-  router.put('/', ensureAuthenticated, organization.update)
-  router.delete('/', ensureAuthenticated, organization.delete)
+  router.put('/', isAuth, organization.update)
+  router.delete('/', isAuth, organization.delete)
 
   app.use('/organization', router)
 }

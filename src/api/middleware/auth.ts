@@ -7,7 +7,7 @@ import { RequestWithUserId } from '../../@types'
 
 const table = () => db<IUsername>('username')
 
-export function ensureAuthenticated(req: RequestWithUserId, res: express.Response, next: express.NextFunction) {
+export function isAuth(req: RequestWithUserId, res: express.Response, next: express.NextFunction) {
 	if (!req.headers.authorization) {
 		return res
 			.status(403)
@@ -35,7 +35,7 @@ export function ensureAuthenticated(req: RequestWithUserId, res: express.Respons
 	next()
 }
 
-export function ensureAuthenticatedAndIsAdmin(req: RequestWithUserId, res: express.Response, next: express.NextFunction) {
+export function isAuthAdmin(req: RequestWithUserId, res: express.Response, next: express.NextFunction) {
 	if (!req.headers.authorization) {
 		return res
 			.status(403)
