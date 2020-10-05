@@ -1,7 +1,6 @@
 import * as express from 'express'
 import db from '../../database/db'
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
 import { IUsername } from './username.model'
 import { RouteCallback } from '../../@types'
 
@@ -23,17 +22,10 @@ export class UsernameController {
       .where('username', usernameTmp.username)
       .then((userRes) => {
         let user = userRes[0]
-
         if (!bcrypt.compareSync(usernameTmp.password, user.password)) { // Bad password
           return res.status(409).send({ message: 'La contraseña es incorrecta.' })
         }
-
-        const expiresIn = 24 * 60 * 60
-        const accessToken = jwt.sign({ id: user.id }, process.env.TOKEN_SECRET || '', { expiresIn })
         req.session.userId = user.id
-        // username.accessToken = accessToken
-        // username.expiresIn = expiresIn
-
         res.status(200).send(user)
       })
       .catch((error) => {
