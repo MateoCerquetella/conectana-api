@@ -1,16 +1,16 @@
-import express from 'express'
-import { isAuth } from '../middleware/auth'
+import express, { RequestHandler } from 'express'
+
 import { PostCommentController } from './post_comment.controller'
 
 const router = express.Router()
 const postComment = new PostCommentController()
 
 export default function postCommentRoutes(app: express.Express) {
-  router.post('/', postComment.create)
-  router.get('/', postComment.findAll)
-  router.get('/:id', postComment.findOne)
-  router.put('/:id', isAuth, postComment.update)
-  router.delete('/', isAuth, postComment.delete)
+  router.post('/', postComment.create as RequestHandler)
+  router.get('/', postComment.findAll as RequestHandler)
+  router.get('/:id', postComment.findOne as RequestHandler)
+  router.put('/:id', postComment.update as RequestHandler)
+  router.delete('/', postComment.delete as RequestHandler)
 
   app.use('/postComment', router)
 }

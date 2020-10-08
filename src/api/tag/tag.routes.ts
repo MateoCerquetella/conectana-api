@@ -1,16 +1,15 @@
-import express from 'express'
+import express, { RequestHandler } from 'express'
 import { TagController } from './tag.controller'
-import { isAuth } from '../middleware/auth'
 
 const router = express.Router()
 const tag = new TagController()
 
 export default function tagRoutes(app: express.Express) {
-  router.post('/', isAuth, tag.create)
-  router.get('/', tag.findAll)
-  router.get('/:id', tag.findOne)
-  router.put('/:id', tag.update)
-  router.delete('/:id', tag.delete)
+  router.post('/', tag.create as RequestHandler)
+  router.get('/', tag.findAll as RequestHandler)
+  router.get('/:id', tag.findOne as RequestHandler)
+  router.put('/:id', tag.update as RequestHandler)
+  router.delete('/:id', tag.delete as RequestHandler)
 
   app.use('/tag', router)
 }

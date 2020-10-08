@@ -1,16 +1,16 @@
-import express from 'express'
-import { isAuth } from '../middleware/auth'
+import express, { RequestHandler } from 'express'
+
 import { UserFollowController } from './user_follow.controller'
 
 const router = express.Router()
 const userFollow = new UserFollowController()
 
 export default function userFollowRoutes(app: express.Express) {
-  router.post('/', userFollow.create)
-  router.get('/', userFollow.findAll)
-  router.get('/:id', userFollow.findOne)
-  router.put('/:id', isAuth, userFollow.update)
-  router.delete('/', isAuth, userFollow.delete)
+  router.post('/', userFollow.create as RequestHandler)
+  router.get('/', userFollow.findAll as RequestHandler)
+  router.get('/:id', userFollow.findOne as RequestHandler)
+  router.put('/:id', userFollow.update as RequestHandler)
+  router.delete('/', userFollow.delete as RequestHandler)
 
   app.use('/userFollow', router)
 }

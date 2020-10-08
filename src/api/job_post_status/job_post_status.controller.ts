@@ -1,11 +1,12 @@
 import * as express from 'express'
+import { RouteCallback } from '../../@types'
 import db from '../../database/db'
 import { IJobPostStatus } from './job_post_status.model'
 
 const table = () => db<IJobPostStatus>('job_post_status')
 
 export class JobPostStatusController {
-  create(req: express.Request, res: express.Response) {
+  create: RouteCallback = function (req, res) {
     const jobPostStatusTmp: IJobPostStatus = req.body
 
     //Validate request
@@ -30,7 +31,7 @@ export class JobPostStatusController {
       })
   }
 
-  findAll(req: express.Request, res: express.Response) {
+  findAll: RouteCallback = function (req, res) {
     table()
       .select()
       .then((jobPostStatus: IJobPostStatus[]) => {
@@ -43,7 +44,7 @@ export class JobPostStatusController {
       })
   }
 
-  findOne(req: express.Request, res: express.Response) {
+  findOne: RouteCallback = function (req, res) {
     const jobPostStatusTmp: IJobPostStatus = req.body
     jobPostStatusTmp.id = +req.params.id
 
@@ -61,7 +62,7 @@ export class JobPostStatusController {
       })
   }
 
-  update(req: express.Request, res: express.Response) {
+  update: RouteCallback = function (req, res) {
     const jobPostStatusTmp: IJobPostStatus = req.body
 
     //Validate request
@@ -86,7 +87,7 @@ export class JobPostStatusController {
       })
   }
 
-  delete(req: express.Request, res: express.Response) {
+  delete: RouteCallback = function (req, res) {
     table()
       .where({ id: +req.params.id })
       .del()

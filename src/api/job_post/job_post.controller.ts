@@ -1,5 +1,5 @@
 import * as express from 'express'
-import { RequestWithUserId } from '../../@types'
+import { RequestWithUserId, RouteCallback } from '../../@types'
 import db from '../../database/db'
 import { IUsername } from '../username/username.model'
 import { IJobPost } from './job_post.model'
@@ -8,7 +8,7 @@ const table = () => db<IJobPost>('job_post')
 
 export class JobPostController {
 
-  create(req: express.Request, res: express.Response) {
+  create: RouteCallback = function (req, res) {
     const jobPostTmp: IJobPost = req.body
 
     //Validate request
@@ -31,7 +31,7 @@ export class JobPostController {
       })
   }
 
-  findAll(req: express.Request, res: express.Response) {
+  findAll: RouteCallback = function (req, res) {
     table()
       .select()
       .then((jobPost: IJobPost[]) => {
@@ -42,7 +42,7 @@ export class JobPostController {
       })
   }
 
-  findOne(req: express.Request, res: express.Response) {
+  findOne: RouteCallback = function (req, res) {
     const id = req.params.id
     table()
       .where('id', id)

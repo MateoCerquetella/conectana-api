@@ -1,4 +1,5 @@
 import * as express from 'express'
+import { RouteCallback } from '../../@types'
 import db from '../../database/db'
 import { IPost } from './post.model'
 
@@ -6,7 +7,7 @@ const table = () => db<IPost>('post')
 
 export class PostController {
 
-  create(req: express.Request, res: express.Response) {
+  create: RouteCallback = function (req, res) {
     const postTmp: IPost = req.body
 
     //Validate request
@@ -29,7 +30,7 @@ export class PostController {
       })
   }
 
-  findAll(req: express.Request, res: express.Response) {
+  findAll: RouteCallback = function (req, res) {
     table()
       .select()
       .then((post: IPost[]) => {
@@ -40,7 +41,7 @@ export class PostController {
       })
   }
 
-  findOne(req: express.Request, res: express.Response) {
+  findOne: RouteCallback = function (req, res) {
     const postTmp: IPost = req.body
     postTmp.id = +req.params.id
 
@@ -56,7 +57,7 @@ export class PostController {
       })
   }
 
-  update(req: express.Request, res: express.Response) {
+  update: RouteCallback = function (req, res) {
     const postTmp: IPost = req.body
 
     //Validate request
@@ -79,7 +80,7 @@ export class PostController {
       })
   }
 
-  delete(req: express.Request, res: express.Response) {
+  delete: RouteCallback = function (req, res) {
     table()
       .where({ id: +req.params.id })
       .del()
