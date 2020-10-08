@@ -14,9 +14,11 @@ const main = async () => {
   // Declare server
   const app = express()
 
+  // Declare Redis
   let RedisStore = connectRedis(session)
   let redisClient = redis.createClient()
 
+  // Start Redis store session
   app.use(
     session({
       name: 'qid',

@@ -1,4 +1,3 @@
-
 import db from '../../database/db'
 import * as express from 'express'
 import { IUsername } from '../username/username.model'
