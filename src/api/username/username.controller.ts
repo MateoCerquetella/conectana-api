@@ -1,6 +1,5 @@
-import * as express from 'express'
 import db from '../../database/db'
-import bcrypt from 'bcrypt'
+// import bcrypt from 'bcrypt'
 import { IUsername } from './username.model'
 import { RouteCallback } from '../../@types'
 
@@ -18,22 +17,22 @@ export class UsernameController {
       })
     }
 
-    table()
-      .where('username', usernameTmp.username)
-      .then((userRes) => {
-        let user = userRes[0]
-        if (!bcrypt.compareSync(usernameTmp.password, user.password)) { // Bad password
-          return res.status(409).send({ message: 'La contraseña es incorrecta.' })
-        }
-        req.session.userId = user.id
-        res.status(200).send(user)
-      })
-      .catch((error) => {
-        if (error.received === 0) return res.status(400).send({ message: 'Usuario no encontrado.' })
-        return res.status(500).send({
-          message: 'Ha ocurrido un error al iniciar sesión.'
-        })
-      })
+    // table()
+    //   .where('username', usernameTmp.username)
+    //   .then((userRes) => {
+    //     let user = userRes[0]
+    //     if (!bcrypt.compareSync(usernameTmp.password, user.password)) { // Bad password
+    //       return res.status(409).send({ message: 'La contraseña es incorrecta.' })
+    //     }
+    //     req.session.userId = user.id
+    //     res.status(200).send(user)
+    //   })
+    //   .catch((error) => {
+    //     if (error.received === 0) return res.status(400).send({ message: 'Usuario no encontrado.' })
+    //     return res.status(500).send({
+    //       message: 'Ha ocurrido un error al iniciar sesión.'
+    //     })
+    //   })
   }
 
   create: RouteCallback = function (req, res) {
@@ -46,7 +45,7 @@ export class UsernameController {
       })
     }
 
-    usernameTmp.password = bcrypt.hashSync(usernameTmp.password, 6)
+    // usernameTmp.password = bcrypt.hashSync(usernameTmp.password, 6)
     usernameTmp.isAdmin = false
 
     table()

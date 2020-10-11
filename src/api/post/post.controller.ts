@@ -1,4 +1,3 @@
-import * as express from 'express'
 import { RouteCallback } from '../../@types'
 import db from '../../database/db'
 import { IPost } from './post.model'
