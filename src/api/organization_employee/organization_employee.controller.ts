@@ -1,7 +1,6 @@
 import * as express from 'express'
-import { RequestWithUserId } from '../../@types'
+import { RequestWithUserId, RouteCallback } from '../../@types'
 import db from '../../database/db'
-import { IUsername } from '../username/username.model'
 import { IOrganizationEmployee } from './organization_employee.model'
 
 const table = () => db<IOrganizationEmployee>('organization_employee')
