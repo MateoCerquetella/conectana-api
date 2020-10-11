@@ -1,5 +1,5 @@
 import db from '../../database/db'
-// import bcrypt from 'bcrypt'
+import argon2 from 'argon2'
 import { IUsername } from './username.model'
 import { RouteCallback } from '../../@types'
 
@@ -17,36 +17,46 @@ export class UsernameController {
       })
     }
 
-    // table()
-    //   .where('username', usernameTmp.username)
-    //   .then((userRes) => {
-    //     let user = userRes[0]
-    //     if (!bcrypt.compareSync(usernameTmp.password, user.password)) { // Bad password
-    //       return res.status(409).send({ message: 'La contraseña es incorrecta.' })
-    //     }
-    //     req.session.userId = user.id
-    //     res.status(200).send(user)
-    //   })
-    //   .catch((error) => {
-    //     if (error.received === 0) return res.status(400).send({ message: 'Usuario no encontrado.' })
-    //     return res.status(500).send({
-    //       message: 'Ha ocurrido un error al iniciar sesión.'
-    //     })
-    //   })
+    table()
+      .where('username', usernameTmp.username)
+      .then((userRes) => {
+        let user = userRes[0]
+        argon2
+          .verify(user.password, usernameTmp.password)
+          .then(isAuth => {
+            if (isAuth) {
+              req.session.userId = user.id
+              res.status(200).send(user)
+            } else {
+              return res.status(409).send({ message: 'La contraseña es incorrecta.' })
+            }
+          })
+          .catch(error => {
+            return res.status(500).send({
+              message: 'Ha ocurrido un error al iniciar sesión.'
+            })
+          })
+      })
+      .catch((error) => {
+        if (error.received === 0) return res.status(400).send({ message: 'Usuario no encontrado.' })
+        return res.status(500).send({
+          message: 'Ha ocurrido un error al iniciar sesión.'
+        })
+      })
   }
 
-  create: RouteCallback = function (req, res) {
+  create: RouteCallback = async function (req, res) {
     const usernameTmp: IUsername = req.body
 
-    //Validate request
+    // Validate request
     if (!usernameTmp.username || !usernameTmp.password || !usernameTmp.email || !usernameTmp.id_colaborator) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'
       })
     }
 
-    // usernameTmp.password = bcrypt.hashSync(usernameTmp.password, 6)
-    usernameTmp.isAdmin = false
+    // Hashing password
+    usernameTmp.password = await argon2.hash(usernameTmp.password)
 
     table()
       .insert(usernameTmp)
@@ -105,7 +115,7 @@ export class UsernameController {
   delete: RouteCallback = function (req, res) {
     table()
       .where({ id: +req.params.id })
-      .del()
+      .update({ isDeleted: true })
       .then((username: number) => {
         return username > 0 ?
           res.status(200).send({ message: 'Borrado con éxito' }) :
