@@ -10,7 +10,7 @@ export default function userFollowRoutes(app: express.Express) {
   router.get('/', userFollow.findAll as RequestHandler)
   router.get('/:id', userFollow.findOne as RequestHandler)
   router.put('/:id', userFollow.update as RequestHandler)
-  router.delete('/', userFollow.delete as RequestHandler)
+  router.delete('/:id', userFollow.delete as RequestHandler)
 
   app.use('/userFollow', router)
 }

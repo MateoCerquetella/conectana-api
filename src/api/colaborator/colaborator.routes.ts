@@ -9,7 +9,7 @@ export default function colaboratorRoutes(app: express.Express) {
   router.get('/', colaborator.findAll as RequestHandler)
   router.get('/:id', colaborator.findOne as RequestHandler)
   router.put('/', colaborator.update as RequestHandler)
-  router.delete('/', colaborator.delete as RequestHandler)
+  router.delete('/:id', colaborator.delete as RequestHandler)
 
   app.use('/colaborator', router)
 }

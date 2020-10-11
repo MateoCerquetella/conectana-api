@@ -33,6 +33,7 @@ export class OrganizationEmployeeController {
   findAll: RouteCallback = function (req, res) {
     table()
       .select()
+      .where({ isDeleted: false })
       .then((organizationEmployee: IOrganizationEmployee[]) => {
         return res.status(200).send(organizationEmployee)
       })
@@ -42,9 +43,8 @@ export class OrganizationEmployeeController {
   }
 
   findOne: RouteCallback = function (req, res) {
-    const id = req.params.id
     table()
-      .where('id', id)
+      .where({ id: +req.params.id, isDeleted: false })
       .then((organizationEmployee: IOrganizationEmployee[]) => {
         return organizationEmployee.length > 0 ?
           res.status(200).send(organizationEmployee) :
@@ -60,7 +60,7 @@ export class OrganizationEmployeeController {
     const organizationEmployeeTmp: IOrganizationEmployee = req.body
 
     table()
-      .where({ id: +req.params.id })
+      .where({ id: +req.params.id, isDeleted: false })
       .update(organizationEmployeeTmp)
       .then((organizationEmployee: number) => {
         return organizationEmployee > 0 ?
@@ -74,8 +74,8 @@ export class OrganizationEmployeeController {
 
   delete(req: RequestWithUserId, res: express.Response) {
     table()
-      .where({ id: req.userId })
-      .del()
+      .where({ id: +req.params.id })
+      .update({ isDeleted: true })
       .then((organizationEmployee: number) => {
         return organizationEmployee > 0 ?
           res.status(200).send({ message: 'Borrado con éxito' }) :

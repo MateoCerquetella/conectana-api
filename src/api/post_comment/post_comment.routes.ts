@@ -10,7 +10,7 @@ export default function postCommentRoutes(app: express.Express) {
   router.get('/', postComment.findAll as RequestHandler)
   router.get('/:id', postComment.findOne as RequestHandler)
   router.put('/:id', postComment.update as RequestHandler)
-  router.delete('/', postComment.delete as RequestHandler)
+  router.delete('/:id', postComment.delete as RequestHandler)
 
   app.use('/postComment', router)
 }

@@ -33,6 +33,7 @@ export class JobPostPostulationController {
   findAll: RouteCallback = function (req, res) {
     table()
       .select()
+      .where({ isDeleted: false })
       .then((jobPostPostulation: IJobPostPostulation[]) => {
         return res.status(200).send(jobPostPostulation)
       })
@@ -44,7 +45,7 @@ export class JobPostPostulationController {
   findOne: RouteCallback = function (req, res) {
     const id = req.params.id
     table()
-      .where('id', id)
+      .where({ id: +req.params.id, isDeleted: false })
       .then((jobPostPostulation: IJobPostPostulation[]) => {
         return jobPostPostulation.length > 0 ?
           res.status(200).send(jobPostPostulation) :
@@ -60,7 +61,7 @@ export class JobPostPostulationController {
     const jobPostPostulationTmp: IJobPostPostulation = req.body
 
     table()
-      .where({ id: +req.params.id })
+      .where({ id: +req.params.id, isDeleted: false })
       .update(jobPostPostulationTmp)
       .then((jobPostPostulation: number) => {
         return jobPostPostulation > 0 ?
@@ -74,8 +75,8 @@ export class JobPostPostulationController {
 
   delete(req: RequestWithUserId, res: express.Response) {
     table()
-      .where({ id: req.userId })
-      .del()
+      .where({ id: +req.params.id })
+      .update({ isDeleted: true })
       .then((jobPostPostulation: number) => {
         return jobPostPostulation > 0 ?
           res.status(200).send({ message: 'Borrado con éxito' }) :

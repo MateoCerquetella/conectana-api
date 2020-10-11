@@ -34,6 +34,7 @@ export class OrganizationController {
   findAll: RouteCallback = function (req, res) {
     table()
       .select()
+      .where({ isDeleted: false })
       .then((organization: IOrganization[]) => {
         return res.status(200).send(organization)
       })
@@ -43,9 +44,8 @@ export class OrganizationController {
   }
 
   findOne: RouteCallback = function (req, res) {
-    const id = req.params.id
     table()
-      .where('id', id)
+      .where({ id: +req.params.id, isDeleted: false })
       .then((organization: IOrganization[]) => {
         return organization.length > 0 ?
           res.status(200).send(organization) :
@@ -65,7 +65,7 @@ export class OrganizationController {
       .whereIn('id', function () {
         this.select('id_organization')
           .from<IUsername>('username')
-          .where('id', req.userId)
+          .where('id', req.session?.userId)
       })
       .update(organizationTmp)
       .then((organization: number) => {
@@ -80,8 +80,8 @@ export class OrganizationController {
 
   delete(req: RequestWithUserId, res: express.Response) {
     table()
-      .where({ id: req.userId })
-      .del()
+      .where({ id: +req.params.id })
+      .update({ isDeleted: true })
       .then((organization: number) => {
         return organization > 0 ?
           res.status(200).send({ message: 'Borrado con éxito' }) :

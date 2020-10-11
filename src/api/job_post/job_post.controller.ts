@@ -42,9 +42,8 @@ export class JobPostController {
   }
 
   findOne: RouteCallback = function (req, res) {
-    const id = req.params.id
     table()
-      .where('id', id)
+      .where({ id: +req.params.id, isDeleted: false })
       .then((jobPost: IJobPost[]) => {
         return jobPost.length > 0 ?
           res.status(200).send(jobPost) :
@@ -60,7 +59,7 @@ export class JobPostController {
     const jobPostTmp: IJobPost = req.body
 
     table()
-      .where({ id: +req.params.id })
+      .where({ id: +req.params.id, isDeleted: false })
       .update(jobPostTmp)
       .then((jobPost: number) => {
         return jobPost > 0 ?
@@ -74,8 +73,8 @@ export class JobPostController {
 
   delete(req: RequestWithUserId, res: express.Response) {
     table()
-      .where({ id: req.userId })
-      .del()
+      .where({ id: +req.params.id })
+      .update({ isDeleted: true })
       .then((jobPost: number) => {
         return jobPost > 0 ?
           res.status(200).send({ message: 'Borrado con éxito' }) :

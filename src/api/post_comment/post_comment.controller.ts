@@ -33,6 +33,7 @@ export class PostCommentController {
   findAll: RouteCallback = function (req, res) {
     table()
       .select()
+      .where({ isDeleted: false })
       .then((postComment: IPostComment[]) => {
         return res.status(200).send(postComment)
       })
@@ -42,9 +43,8 @@ export class PostCommentController {
   }
 
   findOne: RouteCallback = function (req, res) {
-    const id = req.params.id
     table()
-      .where('id', id)
+      .where({ id: +req.params.id, isDeleted: false })
       .then((postComment: IPostComment[]) => {
         return postComment.length > 0 ?
           res.status(200).send(postComment) :
@@ -74,8 +74,8 @@ export class PostCommentController {
 
   delete(req: RequestWithUserId, res: express.Response) {
     table()
-      .where({ id: req.userId })
-      .del()
+      .where({ id: +req.params.id })
+      .update({ isDeleted: true })
       .then((postComment: number) => {
         return postComment > 0 ?
           res.status(200).send({ message: 'Borrado con éxito' }) :

@@ -42,9 +42,8 @@ export class UserFollowController {
   }
 
   findOne: RouteCallback = function (req, res) {
-    const id = req.params.id
     table()
-      .where('id', id)
+      .where({ id: +req.params.id, isDeleted: false })
       .then((userFollow: IUserFollow[]) => {
         return userFollow.length > 0 ?
           res.status(200).send(userFollow) :
@@ -60,7 +59,7 @@ export class UserFollowController {
     const userFollowTmp: IUserFollow = req.body
 
     table()
-      .where({ id: +req.params.id })
+      .where({ id: +req.params.id, isDeleted: false })
       .update(userFollowTmp)
       .then((userFollow: number) => {
         return userFollow > 0 ?
@@ -74,8 +73,8 @@ export class UserFollowController {
 
   delete(req: RequestWithUserId, res: express.Response) {
     table()
-      .where({ id: req.userId })
-      .del()
+      .where({ id: +req.params.id })
+      .update({ isDeleted: true })
       .then((userFollow: number) => {
         return userFollow > 0 ?
           res.status(200).send({ message: 'Borrado con éxito' }) :
