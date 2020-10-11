@@ -115,7 +115,7 @@ export class UsernameController {
   delete: RouteCallback = function (req, res) {
     table()
       .where({ id: +req.params.id })
-      .del()
+      .update({ isDeleted: true })
       .then((username: number) => {
         return username > 0 ?
           res.status(200).send({ message: 'Borrado con éxito' }) :
