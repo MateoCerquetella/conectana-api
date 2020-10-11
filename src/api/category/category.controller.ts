@@ -1,4 +1,3 @@
-import * as express from 'express'
 import { RouteCallback } from '../../@types'
 import db from '../../database/db'
 import { ICategory } from './category.model'

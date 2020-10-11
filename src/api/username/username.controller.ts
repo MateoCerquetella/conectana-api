@@ -45,7 +45,7 @@ export class UsernameController {
       })
     }
 
-    usernameTmp.password = bcrypt.hashSync(usernameTmp.password, 6)
+    // usernameTmp.password = bcrypt.hashSync(usernameTmp.password, 6)
     usernameTmp.isAdmin = false
 
     table()
