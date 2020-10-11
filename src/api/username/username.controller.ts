@@ -1,5 +1,5 @@
 import db from '../../database/db'
-import * as argon2 from "argon2"
+import argon2 from 'argon2'
 import { IUsername } from './username.model'
 import { RouteCallback } from '../../@types'
 
@@ -54,9 +54,9 @@ export class UsernameController {
         message: 'Falta contenido y/o no puede estar vacio.'
       })
     }
+
     // Hashing password
     usernameTmp.password = await argon2.hash(usernameTmp.password)
-    usernameTmp.isAdmin = false
 
     table()
       .insert(usernameTmp)
