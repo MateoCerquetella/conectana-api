@@ -10,7 +10,7 @@ export class OrganizationEmployeeController {
   create: RouteCallback = function (req, res) {
     const organizationEmployeeTmp: IOrganizationEmployee = req.body
 
-    //Validate request
+    // Validate request
     if (!organizationEmployeeTmp.organization_id || !organizationEmployeeTmp.colaborator_id) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'

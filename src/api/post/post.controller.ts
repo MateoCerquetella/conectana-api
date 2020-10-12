@@ -9,7 +9,7 @@ export class PostController {
   create: RouteCallback = function (req, res) {
     const postTmp: IPost = req.body
 
-    //Validate request
+    // Validate request
     if (!postTmp.title) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'
@@ -59,7 +59,7 @@ export class PostController {
   update: RouteCallback = function (req, res) {
     const postTmp: IPost = req.body
 
-    //Validate request
+    // Validate request
     if (!postTmp.title) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'

@@ -9,8 +9,8 @@ export default function jobPostRoutes(app: express.Express) {
   router.post('/', jobPost.create as RequestHandler)
   router.get('/', jobPost.findAll as RequestHandler)
   router.get('/:id', jobPost.findOne as RequestHandler)
-  router.put('/:id', jobPost.update as RequestHandler)
-  router.delete('/:id', jobPost.delete as RequestHandler)
+  router.put('/', jobPost.update as RequestHandler)
+  router.delete('/', jobPost.delete as RequestHandler)
 
   app.use('/jobPost', router)
 }

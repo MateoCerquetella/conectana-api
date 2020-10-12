@@ -10,7 +10,7 @@ export class UserFollowController {
   create: RouteCallback = function (req, res) {
     const userFollowTmp: IUserFollow = req.body
 
-    //Validate request
+    // Validate request
     if (!userFollowTmp.user_from_id || !userFollowTmp.user_to_id || !userFollowTmp.is_following) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'

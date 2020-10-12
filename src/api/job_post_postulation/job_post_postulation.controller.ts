@@ -10,7 +10,7 @@ export class JobPostPostulationController {
   create: RouteCallback = function (req, res) {
     const jobPostPostulationTmp: IJobPostPostulation = req.body
 
-    //Validate request
+    // Validate request
     if (!jobPostPostulationTmp.job_post_id || !jobPostPostulationTmp.username_id || !jobPostPostulationTmp.job_post_status_id) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'
@@ -43,7 +43,6 @@ export class JobPostPostulationController {
   }
 
   findOne: RouteCallback = function (req, res) {
-    const id = req.params.id
     table()
       .where({ id: +req.params.id, isDeleted: false })
       .then((jobPostPostulation: IJobPostPostulation[]) => {

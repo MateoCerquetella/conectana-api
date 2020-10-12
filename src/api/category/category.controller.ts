@@ -9,7 +9,7 @@ export class CategoryController {
   create: RouteCallback = function (req, res) {
     const categoryTmp: ICategory = req.body
 
-    //Validate request
+    // Validate request
     if (!categoryTmp.name) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'
@@ -41,11 +41,8 @@ export class CategoryController {
   }
 
   findOne: RouteCallback = function (req, res) {
-    const categoryTmp: ICategory = req.body
-    categoryTmp.id = +req.params.id
-
     table()
-      .where({ id: categoryTmp.id })
+      .where({ id: +req.params.id })
       .then((category: ICategory[]) => {
         return category.length > 0 ?
           res.status(200).send(category) :
@@ -59,7 +56,7 @@ export class CategoryController {
   update: RouteCallback = function (req, res) {
     const categoryTmp: ICategory = req.body
 
-    //Validate request
+    // Validate request
     if (!categoryTmp.name) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'

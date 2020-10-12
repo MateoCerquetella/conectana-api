@@ -10,7 +10,7 @@ export class JobPostController {
   create: RouteCallback = function (req, res) {
     const jobPostTmp: IJobPost = req.body
 
-    //Validate request
+    // Validate request
     if (!jobPostTmp.title || !jobPostTmp.tag_id || !jobPostTmp.description) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'
@@ -58,6 +58,11 @@ export class JobPostController {
   update(req: RequestWithUserId, res: express.Response) {
     const jobPostTmp: IJobPost = req.body
 
+    if (jobPostTmp.isDeleted !== undefined) {
+      return res.status(400).send({
+        message: 'No puedes borrar explícitamente en la modificacion.'
+      })
+    }
     table()
       .where({ id: +req.params.id, isDeleted: false })
       .update(jobPostTmp)

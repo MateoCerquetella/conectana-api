@@ -11,7 +11,7 @@ export class OrganizationController {
   create: RouteCallback = function (req, res) {
     const organizationTmp: IOrganization = req.body
 
-    //Validate request
+    // Validate request
     if (!organizationTmp.company_name || !organizationTmp.what_we_do || !organizationTmp.category_id) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'

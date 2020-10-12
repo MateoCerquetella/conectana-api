@@ -9,7 +9,7 @@ export class TagController {
   create: RouteCallback = function (req, res) {
     const tagTmp: ITag = req.body
 
-    //Validate request
+    // Validate request
     if (!tagTmp.name) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'
@@ -59,7 +59,7 @@ export class TagController {
   update: RouteCallback = function (req, res) {
     const tagTmp: ITag = req.body
 
-    //Validate request
+    // Validate request
     if (!tagTmp.name) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'

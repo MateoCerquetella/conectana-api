@@ -12,7 +12,7 @@ export class ColaboratorController {
   create: RouteCallback = function (req, res) {
     const colaboratorTmp: IColaborator = req.body
 
-    //Validate request
+    // Validate request
     if (!colaboratorTmp.first_name || !colaboratorTmp.last_name || !colaboratorTmp.date_birth || !colaboratorTmp.tag_id) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'
@@ -65,7 +65,7 @@ export class ColaboratorController {
       .whereIn('id', function () {
         this.select('id_colaborator')
           .from<IUsername>('username')
-          .where('id', req.session?.userId)
+          .where({ id: req.session?.userId })
       })
       .update(colaboratorTmp)
       .then((colaborator: number) => {
@@ -80,7 +80,7 @@ export class ColaboratorController {
 
   delete(req: RequestWithUserId, res: express.Response) {
     table()
-      .where({ id: +req.params.id })
+      .where({ id: req.session?.userId })
       .update({ isDeleted: true })
       .then((colaborator: number) => {
         return colaborator > 0 ?
