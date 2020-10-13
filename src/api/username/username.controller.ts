@@ -74,6 +74,7 @@ export class UsernameController {
   findAll: RouteCallback = function (req, res) {
     table()
       .select()
+      .where({ isDeleted: false })
       .then((user: IUsername[]) => {
         return res.status(200).send(user)
       })
@@ -83,13 +84,12 @@ export class UsernameController {
   }
 
   findOne: RouteCallback = function (req, res) {
-    const id = req.params.id
     table()
-      .where('id', id)
+      .where({ id: +req.params.id, isDeleted: false })
       .then((user: IUsername[]) => {
         return user.length > 0 ?
           res.status(200).send(user) :
-          res.status(404).send({ message: 'Username not found' })
+          res.status(404).send({ message: 'Username no encontrado' })
       })
       .catch(() => {
         return res.status(500).json({ message: 'Server error' })
@@ -99,8 +99,18 @@ export class UsernameController {
   update: RouteCallback = function (req, res) {
     const usernameTmp: IUsername = req.body
 
+    if (usernameTmp.isAdmin !== undefined) {
+      return res.status(400).send({
+        message: 'No puedes darte administrador explícitamente.'
+      })
+    }
+
+    if (req.session.userId !== +req.params.id) {
+      return res.status(403).send({ message: 'No puedes acceder a este contenido' })
+    }
+
     table()
-      .where({ id: +req.params.id })
+      .where({ id: req.session.userId, isDeleted: false })
       .update(usernameTmp)
       .then((username: number) => {
         return username > 0 ?
@@ -114,7 +124,7 @@ export class UsernameController {
 
   delete: RouteCallback = function (req, res) {
     table()
-      .where({ id: +req.params.id })
+      .where({ id: req.session.userId })
       .update({ isDeleted: true })
       .then((username: number) => {
         return username > 0 ?

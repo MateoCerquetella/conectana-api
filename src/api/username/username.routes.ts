@@ -10,8 +10,8 @@ export default function usernameRoutes(app: express.Express) {
   router.post('/', username.create as RequestHandler)
   router.get('/', isAuthAdmin, username.findAll as RequestHandler)
   router.get('/:id', isAuthAdmin, username.findOne as RequestHandler)
-  router.put('/:id', isAuthAdmin, username.update as RequestHandler)
-  router.delete('/:id', isAuthAdmin, username.delete as RequestHandler)
+  router.put('/:id', username.update as RequestHandler)
+  router.delete('/:id', username.delete as RequestHandler)
 
   app.use('/username', router)
 }

@@ -3,5 +3,5 @@ export type IColaborator = BaseTable & {
     last_name: string
     tag_id: number
     date_birth: Date
-    bio: string
+    bio?: string
 }

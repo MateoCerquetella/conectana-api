@@ -1,5 +1,4 @@
-import * as express from 'express'
-import { RequestWithUserId, RouteCallback } from '../../@types'
+import { RouteCallback } from '../../@types'
 import db from '../../database/db'
 import { IUserFollow } from './user_follow.model'
 
@@ -10,7 +9,7 @@ export class UserFollowController {
   create: RouteCallback = function (req, res) {
     const userFollowTmp: IUserFollow = req.body
 
-    //Validate request
+    // Validate request
     if (!userFollowTmp.user_from_id || !userFollowTmp.user_to_id || !userFollowTmp.is_following) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'
@@ -42,9 +41,8 @@ export class UserFollowController {
   }
 
   findOne: RouteCallback = function (req, res) {
-    const id = req.params.id
     table()
-      .where('id', id)
+      .where({ id: +req.params.id, isDeleted: false })
       .then((userFollow: IUserFollow[]) => {
         return userFollow.length > 0 ?
           res.status(200).send(userFollow) :
@@ -60,7 +58,7 @@ export class UserFollowController {
     const userFollowTmp: IUserFollow = req.body
 
     table()
-      .where({ id: +req.params.id })
+      .where({ id: +req.params.id, isDeleted: false })
       .update(userFollowTmp)
       .then((userFollow: number) => {
         return userFollow > 0 ?
@@ -72,10 +70,10 @@ export class UserFollowController {
       })
   }
 
-  delete(req: RequestWithUserId, res: express.Response) {
+  delete: RouteCallback = function (req, res) {
     table()
-      .where({ id: req.userId })
-      .del()
+      .where({ id: +req.params.id })
+      .update({ isDeleted: true })
       .then((userFollow: number) => {
         return userFollow > 0 ?
           res.status(200).send({ message: 'Borrado con éxito' }) :

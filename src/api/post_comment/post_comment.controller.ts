@@ -1,5 +1,4 @@
-import * as express from 'express'
-import { RequestWithUserId, RouteCallback } from '../../@types'
+import { RouteCallback } from '../../@types'
 import db from '../../database/db'
 import { IPostComment } from './post_comment.model'
 
@@ -10,7 +9,7 @@ export class PostCommentController {
   create: RouteCallback = function (req, res) {
     const postCommentTmp: IPostComment = req.body
 
-    //Validate request
+    // Validate request
     if (!postCommentTmp.post_id || !postCommentTmp.username_id || !postCommentTmp.text) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'
@@ -33,6 +32,7 @@ export class PostCommentController {
   findAll: RouteCallback = function (req, res) {
     table()
       .select()
+      .where({ isDeleted: false })
       .then((postComment: IPostComment[]) => {
         return res.status(200).send(postComment)
       })
@@ -42,9 +42,8 @@ export class PostCommentController {
   }
 
   findOne: RouteCallback = function (req, res) {
-    const id = req.params.id
     table()
-      .where('id', id)
+      .where({ id: +req.params.id, isDeleted: false })
       .then((postComment: IPostComment[]) => {
         return postComment.length > 0 ?
           res.status(200).send(postComment) :
@@ -56,7 +55,7 @@ export class PostCommentController {
       })
   }
 
-  update(req: RequestWithUserId, res: express.Response) {
+  update: RouteCallback = function (req, res) {
     const postCommentTmp: IPostComment = req.body
 
     table()
@@ -72,10 +71,10 @@ export class PostCommentController {
       })
   }
 
-  delete(req: RequestWithUserId, res: express.Response) {
+  delete: RouteCallback = function (req, res) {
     table()
-      .where({ id: req.userId })
-      .del()
+      .where({ id: +req.params.id })
+      .update({ isDeleted: true })
       .then((postComment: number) => {
         return postComment > 0 ?
           res.status(200).send({ message: 'Borrado con éxito' }) :

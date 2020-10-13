@@ -10,7 +10,7 @@ export default function organizationEmployeeRoutes(app: express.Express) {
   router.get('/', organizationEmployee.findAll as RequestHandler)
   router.get('/:id', organizationEmployee.findOne as RequestHandler)
   router.put('/:id', organizationEmployee.update as RequestHandler)
-  router.delete('/', organizationEmployee.delete as RequestHandler)
+  router.delete('/:id', organizationEmployee.delete as RequestHandler)
 
   app.use('/organizationEmployee', router)
 }

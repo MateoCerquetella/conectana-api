@@ -8,7 +8,7 @@ export class JobPostStatusController {
   create: RouteCallback = function (req, res) {
     const jobPostStatusTmp: IJobPostStatus = req.body
 
-    //Validate request
+    // Validate request
     if (!jobPostStatusTmp.name) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.',
@@ -64,7 +64,7 @@ export class JobPostStatusController {
   update: RouteCallback = function (req, res) {
     const jobPostStatusTmp: IJobPostStatus = req.body
 
-    //Validate request
+    // Validate request
     if (!jobPostStatusTmp.name) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.',

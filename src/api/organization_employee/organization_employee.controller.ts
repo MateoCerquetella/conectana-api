@@ -1,5 +1,5 @@
 import * as express from 'express'
-import { RequestWithUserId, RouteCallback } from '../../@types'
+import { RouteCallback } from '../../@types'
 import db from '../../database/db'
 import { IOrganizationEmployee } from './organization_employee.model'
 
@@ -10,7 +10,7 @@ export class OrganizationEmployeeController {
   create: RouteCallback = function (req, res) {
     const organizationEmployeeTmp: IOrganizationEmployee = req.body
 
-    //Validate request
+    // Validate request
     if (!organizationEmployeeTmp.organization_id || !organizationEmployeeTmp.colaborator_id) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'
@@ -33,6 +33,7 @@ export class OrganizationEmployeeController {
   findAll: RouteCallback = function (req, res) {
     table()
       .select()
+      .where({ isDeleted: false })
       .then((organizationEmployee: IOrganizationEmployee[]) => {
         return res.status(200).send(organizationEmployee)
       })
@@ -42,9 +43,8 @@ export class OrganizationEmployeeController {
   }
 
   findOne: RouteCallback = function (req, res) {
-    const id = req.params.id
     table()
-      .where('id', id)
+      .where({ id: +req.params.id, isDeleted: false })
       .then((organizationEmployee: IOrganizationEmployee[]) => {
         return organizationEmployee.length > 0 ?
           res.status(200).send(organizationEmployee) :
@@ -56,11 +56,11 @@ export class OrganizationEmployeeController {
       })
   }
 
-  update(req: RequestWithUserId, res: express.Response) {
+  update: RouteCallback = function (req, res) {
     const organizationEmployeeTmp: IOrganizationEmployee = req.body
 
     table()
-      .where({ id: +req.params.id })
+      .where({ id: +req.params.id, isDeleted: false })
       .update(organizationEmployeeTmp)
       .then((organizationEmployee: number) => {
         return organizationEmployee > 0 ?
@@ -72,10 +72,10 @@ export class OrganizationEmployeeController {
       })
   }
 
-  delete(req: RequestWithUserId, res: express.Response) {
+  delete: RouteCallback = function (req, res) {
     table()
-      .where({ id: req.userId })
-      .del()
+      .where({ id: +req.params.id })
+      .update({ isDeleted: true })
       .then((organizationEmployee: number) => {
         return organizationEmployee > 0 ?
           res.status(200).send({ message: 'Borrado con éxito' }) :

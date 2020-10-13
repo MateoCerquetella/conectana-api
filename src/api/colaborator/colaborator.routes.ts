@@ -8,8 +8,8 @@ export default function colaboratorRoutes(app: express.Express) {
   router.post('/', colaborator.create as RequestHandler)
   router.get('/', colaborator.findAll as RequestHandler)
   router.get('/:id', colaborator.findOne as RequestHandler)
-  router.put('/', colaborator.update as RequestHandler)
-  router.delete('/', colaborator.delete as RequestHandler)
+  router.put('/:id', colaborator.update as RequestHandler)
+  router.delete('/:id', colaborator.delete as RequestHandler)
 
   app.use('/colaborator', router)
 }

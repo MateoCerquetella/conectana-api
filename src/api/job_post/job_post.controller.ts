@@ -1,5 +1,4 @@
-import * as express from 'express'
-import { RequestWithUserId, RouteCallback } from '../../@types'
+import { RouteCallback } from '../../@types'
 import db from '../../database/db'
 import { IJobPost } from './job_post.model'
 
@@ -10,7 +9,7 @@ export class JobPostController {
   create: RouteCallback = function (req, res) {
     const jobPostTmp: IJobPost = req.body
 
-    //Validate request
+    // Validate request
     if (!jobPostTmp.title || !jobPostTmp.tag_id || !jobPostTmp.description) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'
@@ -42,9 +41,8 @@ export class JobPostController {
   }
 
   findOne: RouteCallback = function (req, res) {
-    const id = req.params.id
     table()
-      .where('id', id)
+      .where({ id: +req.params.id, isDeleted: false })
       .then((jobPost: IJobPost[]) => {
         return jobPost.length > 0 ?
           res.status(200).send(jobPost) :
@@ -56,11 +54,16 @@ export class JobPostController {
       })
   }
 
-  update(req: RequestWithUserId, res: express.Response) {
+  update: RouteCallback = function (req, res) {
     const jobPostTmp: IJobPost = req.body
 
+    // if (jobPostTmp.isDeleted !== undefined) {
+    //   return res.status(400).send({
+    //     message: 'No puedes borrar explícitamente en la modificacion.'
+    //   })
+    // }
     table()
-      .where({ id: +req.params.id })
+      .where({ id: +req.params.id, isDeleted: false })
       .update(jobPostTmp)
       .then((jobPost: number) => {
         return jobPost > 0 ?
@@ -72,10 +75,10 @@ export class JobPostController {
       })
   }
 
-  delete(req: RequestWithUserId, res: express.Response) {
+  delete: RouteCallback = function (req, res) {
     table()
-      .where({ id: req.userId })
-      .del()
+      .where({ id: +req.params.id })
+      .update({ isDeleted: true })
       .then((jobPost: number) => {
         return jobPost > 0 ?
           res.status(200).send({ message: 'Borrado con éxito' }) :

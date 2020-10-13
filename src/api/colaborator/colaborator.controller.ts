@@ -1,18 +1,16 @@
-import * as express from 'express'
-import { RequestWithUserId, RouteCallback } from '../../@types'
+import { RouteCallback } from '../../@types'
 import db from '../../database/db'
 import { IUsername } from '../username/username.model'
 import { IColaborator } from './colaborator.model'
 
 const table = () => db<IColaborator>('colaborator')
 
-
 export class ColaboratorController {
 
   create: RouteCallback = function (req, res) {
     const colaboratorTmp: IColaborator = req.body
 
-    //Validate request
+    // Validate request
     if (!colaboratorTmp.first_name || !colaboratorTmp.last_name || !colaboratorTmp.date_birth || !colaboratorTmp.tag_id) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'
@@ -35,6 +33,7 @@ export class ColaboratorController {
   findAll: RouteCallback = function (req, res) {
     table()
       .select()
+      .where({ isDeleted: false })
       .then((colaborator: IColaborator[]) => {
         return res.status(200).send(colaborator)
       })
@@ -44,9 +43,8 @@ export class ColaboratorController {
   }
 
   findOne: RouteCallback = function (req, res) {
-    const id = req.params.id
     table()
-      .where('id', id)
+      .where({ id: +req.params.id, isDeleted: false })
       .then((colaborator: IColaborator[]) => {
         return colaborator.length > 0 ?
           res.status(200).send(colaborator) :
@@ -57,7 +55,7 @@ export class ColaboratorController {
       })
   }
 
-  update(req: RequestWithUserId, res: express.Response) {
+  update: RouteCallback = function (req, res) {
     const colaboratorTmp: IColaborator = req.body
 
     table()
@@ -65,7 +63,7 @@ export class ColaboratorController {
       .whereIn('id', function () {
         this.select('id_colaborator')
           .from<IUsername>('username')
-          .where('id', req.userId)
+          .where({ id: req.session?.userId })
       })
       .update(colaboratorTmp)
       .then((colaborator: number) => {
@@ -78,10 +76,10 @@ export class ColaboratorController {
       })
   }
 
-  delete(req: RequestWithUserId, res: express.Response) {
+  delete: RouteCallback = function (req, res) {
     table()
-      .where({ id: req.userId })
-      .del()
+      .where({ id: req.session.userId })
+      .update({ isDeleted: true })
       .then((colaborator: number) => {
         return colaborator > 0 ?
           res.status(200).send({ message: 'Borrado con éxito' }) :
