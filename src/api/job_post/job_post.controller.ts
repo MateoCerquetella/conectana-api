@@ -57,11 +57,11 @@ export class JobPostController {
   update: RouteCallback = function (req, res) {
     const jobPostTmp: IJobPost = req.body
 
-    if (jobPostTmp.isDeleted !== undefined) {
-      return res.status(400).send({
-        message: 'No puedes borrar explícitamente en la modificacion.'
-      })
-    }
+    // if (jobPostTmp.isDeleted !== undefined) {
+    //   return res.status(400).send({
+    //     message: 'No puedes borrar explícitamente en la modificacion.'
+    //   })
+    // }
     table()
       .where({ id: +req.params.id, isDeleted: false })
       .update(jobPostTmp)
