@@ -99,8 +99,18 @@ export class UsernameController {
   update: RouteCallback = function (req, res) {
     const usernameTmp: IUsername = req.body
 
+    if (usernameTmp.isAdmin !== undefined) {
+      return res.status(400).send({
+        message: 'No puedes darte administrador explícitamente.'
+      })
+    }
+
+    if (req.session.userId !== +req.params.id) {
+      return res.status(403).send({ message: 'No puedes acceder a este contenido' })
+    }
+
     table()
-      .where({ id: +req.params.id, isDeleted: false })
+      .where({ id: req.session.userId, isDeleted: false })
       .update(usernameTmp)
       .then((username: number) => {
         return username > 0 ?
@@ -114,7 +124,7 @@ export class UsernameController {
 
   delete: RouteCallback = function (req, res) {
     table()
-      .where({ id: +req.params.id })
+      .where({ id: req.session.userId })
       .update({ isDeleted: true })
       .then((username: number) => {
         return username > 0 ?
