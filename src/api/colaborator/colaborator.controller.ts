@@ -1,11 +1,9 @@
-import * as express from 'express'
-import { RequestWithUserId, RouteCallback } from '../../@types'
+import { RouteCallback } from '../../@types'
 import db from '../../database/db'
 import { IUsername } from '../username/username.model'
 import { IColaborator } from './colaborator.model'
 
 const table = () => db<IColaborator>('colaborator')
-
 
 export class ColaboratorController {
 
@@ -57,7 +55,7 @@ export class ColaboratorController {
       })
   }
 
-  update(req: RequestWithUserId, res: express.Response) {
+  update: RouteCallback = function (req, res) {
     const colaboratorTmp: IColaborator = req.body
 
     table()
@@ -78,9 +76,9 @@ export class ColaboratorController {
       })
   }
 
-  delete(req: RequestWithUserId, res: express.Response) {
+  delete: RouteCallback = function (req, res) {
     table()
-      .where({ id: req.session?.userId })
+      .where({ id: req.session.userId })
       .update({ isDeleted: true })
       .then((colaborator: number) => {
         return colaborator > 0 ?

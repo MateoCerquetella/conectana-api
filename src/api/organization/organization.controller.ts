@@ -1,5 +1,4 @@
-import * as express from 'express'
-import { RequestWithUserId, RouteCallback } from '../../@types'
+import { RouteCallback } from '../../@types'
 import db from '../../database/db'
 import { IUsername } from '../username/username.model'
 import { IOrganization } from './organization.model'
@@ -57,7 +56,7 @@ export class OrganizationController {
       })
   }
 
-  update(req: RequestWithUserId, res: express.Response) {
+  update: RouteCallback = function (req, res) {
     const organizationTmp: IOrganization = req.body
 
     table()
@@ -78,7 +77,7 @@ export class OrganizationController {
       })
   }
 
-  delete(req: RequestWithUserId, res: express.Response) {
+  delete: RouteCallback = function (req, res) {
     table()
       .where({ id: +req.params.id })
       .update({ isDeleted: true })

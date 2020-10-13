@@ -1,11 +1,10 @@
 import db from '../../database/db'
 import * as express from 'express'
 import { IUsername } from '../username/username.model'
-import { RequestWithUserId } from '../../@types'
 
 const table = () => db<IUsername>('username')
 
-export function isAuthAdmin(req: RequestWithUserId, res: express.Response, next: express.NextFunction) {
+export function isAuthAdmin(req: express.Request, res: express.Response, next: express.NextFunction) {
   if (!req.session?.userId) {
     return res
       .status(403)
@@ -14,7 +13,7 @@ export function isAuthAdmin(req: RequestWithUserId, res: express.Response, next:
 
   //Check if it's admin
   table()
-    .where({ id: req.session?.userId })
+    .where({ id: req.session.userId })
     .select('isAdmin')
     .then((user: Pick<IUsername, 'isAdmin'>[]) => {
       return !!user[0].isAdmin ? next() :

@@ -1,5 +1,4 @@
-import * as express from 'express'
-import { RequestWithUserId, RouteCallback } from '../../@types'
+import { RouteCallback } from '../../@types'
 import db from '../../database/db'
 import { IJobPost } from './job_post.model'
 
@@ -55,7 +54,7 @@ export class JobPostController {
       })
   }
 
-  update(req: RequestWithUserId, res: express.Response) {
+  update: RouteCallback = function (req, res) {
     const jobPostTmp: IJobPost = req.body
 
     if (jobPostTmp.isDeleted !== undefined) {
@@ -76,7 +75,7 @@ export class JobPostController {
       })
   }
 
-  delete(req: RequestWithUserId, res: express.Response) {
+  delete: RouteCallback = function (req, res) {
     table()
       .where({ id: +req.params.id })
       .update({ isDeleted: true })
