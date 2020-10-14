@@ -1,4 +1,4 @@
-# 🌎 Ayudalo App Api | 2020
+# 🌎 Conectana Api | 2020
 
 ### Install
 
