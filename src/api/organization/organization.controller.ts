@@ -63,7 +63,7 @@ export class OrganizationController {
       .select()
       .whereIn('id', function () {
         this.select('id_organization')
-          .from<IUser>('username')
+          .from<IUser>('user')
           .where('id', req.session?.userId)
       })
       .update(organizationTmp)
