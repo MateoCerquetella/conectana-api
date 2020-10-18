@@ -1,6 +1,6 @@
 import { RouteCallback } from '../../@types'
 import db from '../../database/db'
-import { IUsername } from '../username/username.model'
+import { IUser } from '../user/user.model'
 import { IColaborator } from './colaborator.model'
 
 const table = () => db<IColaborator>('colaborator')
@@ -62,7 +62,7 @@ export class ColaboratorController {
       .select()
       .whereIn('id', function () {
         this.select('id_colaborator')
-          .from<IUsername>('username')
+          .from<IUser>('username')
           .where({ id: req.session?.userId })
       })
       .update(colaboratorTmp)

@@ -1,28 +1,28 @@
 import db from '../../database/db'
 import argon2 from 'argon2'
-import { IUsername } from './username.model'
+import { IUser } from './user.model'
 import { RouteCallback } from '../../@types'
 
-const table = () => db<IUsername>('username')
+const table = () => db<IUser>('user')
 
-export class UsernameController {
+export class UserController {
 
   login: RouteCallback = function (req, res) {
-    const usernameTmp: IUsername = req.body
+    const userTmp: IUser = req.body
 
     // Validate request
-    if (!usernameTmp.username || !usernameTmp.password) {
+    if (!userTmp.username || !userTmp.password) {
       return res.status(400).send({
         message: 'Falta contenido en el cuerpo.'
       })
     }
 
     table()
-      .where('username', usernameTmp.username)
+      .where('user', userTmp.username)
       .then((userRes) => {
         let user = userRes[0]
         argon2
-          .verify(user.password, usernameTmp.password)
+          .verify(user.password, userTmp.password)
           .then(isAuth => {
             if (isAuth) {
               req.session.userId = user.id
@@ -46,26 +46,26 @@ export class UsernameController {
   }
 
   create: RouteCallback = async function (req, res) {
-    const usernameTmp: IUsername = req.body
+    const userTmp: IUser = req.body
 
     // Validate request
-    if (!usernameTmp.username || !usernameTmp.password || !usernameTmp.email || !usernameTmp.id_colaborator) {
+    if (!userTmp.username || !userTmp.password || !userTmp.email || !userTmp.id_colaborator) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'
       })
     }
 
     // Hashing password
-    usernameTmp.password = await argon2.hash(usernameTmp.password)
+    userTmp.password = await argon2.hash(userTmp.password)
 
     table()
-      .insert(usernameTmp)
+      .insert(userTmp)
       .then(() => {
         return res.status(200).send({ message: 'Creado con éxito' })
       })
       .catch((error) => {
         if (error.code === '23505') {
-          return res.status(409).send({ message: 'Ya existe el username' })
+          return res.status(409).send({ message: 'Ya existe el user' })
         }
         return res.status(500).json({ message: 'Server error', messageError: error.detail })
       })
@@ -75,7 +75,7 @@ export class UsernameController {
     table()
       .select()
       .where({ isDeleted: false })
-      .then((user: IUsername[]) => {
+      .then((user: IUser[]) => {
         return res.status(200).send(user)
       })
       .catch(() => {
@@ -86,10 +86,10 @@ export class UsernameController {
   findOne: RouteCallback = function (req, res) {
     table()
       .where({ id: +req.params.id, isDeleted: false })
-      .then((user: IUsername[]) => {
+      .then((user: IUser[]) => {
         return user.length > 0 ?
           res.status(200).send(user) :
-          res.status(404).send({ message: 'Username no encontrado' })
+          res.status(404).send({ message: 'User no encontrado' })
       })
       .catch(() => {
         return res.status(500).json({ message: 'Server error' })
@@ -97,9 +97,9 @@ export class UsernameController {
   }
 
   update: RouteCallback = function (req, res) {
-    const usernameTmp: IUsername = req.body
+    const userTmp: IUser = req.body
 
-    if (usernameTmp.isAdmin !== undefined) {
+    if (userTmp.isAdmin !== undefined) {
       return res.status(400).send({
         message: 'No puedes darte administrador explícitamente.'
       })
@@ -111,11 +111,11 @@ export class UsernameController {
 
     table()
       .where({ id: req.session.userId, isDeleted: false })
-      .update(usernameTmp)
-      .then((username: number) => {
-        return username > 0 ?
+      .update(userTmp)
+      .then((user: number) => {
+        return user > 0 ?
           res.status(200).send({ message: 'Modificado con éxito' }) :
-          res.status(404).send({ message: 'Username no encontrado' })
+          res.status(404).send({ message: 'User no encontrado' })
       })
       .catch((error) => {
         return res.status(500).json({ message: 'Server error', messageError: error.detail })
@@ -126,10 +126,10 @@ export class UsernameController {
     table()
       .where({ id: req.session.userId })
       .update({ isDeleted: true })
-      .then((username: number) => {
-        return username > 0 ?
+      .then((user: number) => {
+        return user > 0 ?
           res.status(200).send({ message: 'Borrado con éxito' }) :
-          res.status(404).send({ message: 'Username no encontrado' })
+          res.status(404).send({ message: 'User no encontrado' })
       })
       .catch((error) => {
         return res.status(500).json({ message: 'Server error', messageError: error.detail })

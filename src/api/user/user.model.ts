@@ -1,4 +1,4 @@
-export type IUsername = BaseTable & IUsernameCredentials & {
+export type IUser = BaseTable & IUserCredentials & {
     username: string
     email: string
     photo_url?: string
@@ -9,7 +9,7 @@ export type IUsername = BaseTable & IUsernameCredentials & {
     isAdmin: boolean
 }
 
-type IUsernameCredentials = {
+type IUserCredentials = {
     accessToken?: string
     expiresIn?: number
 }
