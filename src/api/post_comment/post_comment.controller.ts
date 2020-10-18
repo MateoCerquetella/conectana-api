@@ -10,7 +10,7 @@ export class PostCommentController {
     const postCommentTmp: IPostComment = req.body
 
     // Validate request
-    if (!postCommentTmp.post_id || !postCommentTmp.username_id || !postCommentTmp.text) {
+    if (!postCommentTmp.post_id || !postCommentTmp.user_id || !postCommentTmp.text) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'
       })

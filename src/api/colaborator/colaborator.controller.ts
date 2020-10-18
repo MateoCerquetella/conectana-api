@@ -62,7 +62,7 @@ export class ColaboratorController {
       .select()
       .whereIn('id', function () {
         this.select('id_colaborator')
-          .from<IUser>('username')
+          .from<IUser>('user')
           .where({ id: req.session?.userId })
       })
       .update(colaboratorTmp)

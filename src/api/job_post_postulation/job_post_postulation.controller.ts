@@ -10,7 +10,7 @@ export class JobPostPostulationController {
     const jobPostPostulationTmp: IJobPostPostulation = req.body
 
     // Validate request
-    if (!jobPostPostulationTmp.job_post_id || !jobPostPostulationTmp.username_id || !jobPostPostulationTmp.job_post_status_id) {
+    if (!jobPostPostulationTmp.job_post_id || !jobPostPostulationTmp.user_id || !jobPostPostulationTmp.job_post_status_id) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'
       })

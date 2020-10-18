@@ -2,7 +2,7 @@ import db from '../../database/db'
 import * as express from 'express'
 import { IUser } from '../user/user.model'
 
-const table = () => db<IUser>('username')
+const table = () => db<IUser>('user')
 
 export function isAuthAdmin(req: express.Request, res: express.Response, next: express.NextFunction) {
   if (!req.session?.userId) {
