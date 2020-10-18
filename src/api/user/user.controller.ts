@@ -18,7 +18,7 @@ export class UserController {
     }
 
     table()
-      .where('user', userTmp.username)
+      .where('username', userTmp.username)
       .then((userRes) => {
         let user = userRes[0]
         argon2
@@ -26,6 +26,7 @@ export class UserController {
           .then(isAuth => {
             if (isAuth) {
               req.session.userId = user.id
+              req.session.isAdmin = user.isAdmin
               res.status(200).send(user)
             } else {
               return res.status(409).send({ message: 'La contraseña es incorrecta.' })
@@ -105,12 +106,12 @@ export class UserController {
       })
     }
 
-    if (req.session.userId !== +req.params.id) {
+    if (!(req.session.userId === +req.params.id || req.session.isAdmin)) {
       return res.status(403).send({ message: 'No puedes acceder a este contenido' })
     }
 
     table()
-      .where({ id: req.session.userId, isDeleted: false })
+      .where({ id: +req.params.id, isDeleted: false })
       .update(userTmp)
       .then((user: number) => {
         return user > 0 ?
@@ -124,7 +125,7 @@ export class UserController {
 
   delete: RouteCallback = function (req, res) {
     table()
-      .where({ id: req.session.userId })
+      .where({ id: +req.params.id })
       .update({ isDeleted: true })
       .then((user: number) => {
         return user > 0 ?
