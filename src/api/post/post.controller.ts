@@ -66,8 +66,12 @@ export class PostController {
       })
     }
 
+    if (!(req.session.userId === +req.params.id || req.session.isAdmin)) {
+      return res.status(403).send({ message: 'No puedes acceder a este contenido' })
+    }
+
     table()
-      .where({ id: +req.params.id })
+      .where({ id: +req.params.id, user_id: req.session.userId })
       .update({ title: postTmp.title })
       .then((post: number) => {
         return post > 0 ?
@@ -80,8 +84,12 @@ export class PostController {
   }
 
   delete: RouteCallback = function (req, res) {
+    if (!(req.session.userId === +req.params.id || req.session.isAdmin)) {
+      return res.status(403).send({ message: 'No puedes acceder a este contenido' })
+    }
+
     table()
-      .where({ id: +req.params.id })
+      .where({ id: +req.params.id, user_id: req.session.userId })
       .del()
       .then((post: number) => {
         return post > 0 ?

@@ -4,7 +4,7 @@ import tagRoutes from '../api/tag/tag.routes'
 import postRoutes from '../api/post/post.routes'
 import categoryRoutes from '../api/category/category.routes'
 import colaboratorRoutes from '../api/colaborator/colaborator.routes'
-import usernameRoutes from '../api/username/username.routes'
+import userRoutes from '../api/user/user.routes'
 import jobPostPostulationRoutes from '../api/job_post_postulation/job_post_postulation.routes'
 import jobPostRoutes from '../api/job_post/job_post.routes'
 import postCommentRoutes from '../api/post_comment/post_comment.routes'
@@ -21,6 +21,6 @@ export default (app: Express) => {
   categoryRoutes(app)
   colaboratorRoutes(app)
   organizationRoutes(app)
-  usernameRoutes(app)
+  userRoutes(app)
   userFollowRoutes(app)
 }

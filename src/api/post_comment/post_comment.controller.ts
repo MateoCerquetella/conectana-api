@@ -10,7 +10,7 @@ export class PostCommentController {
     const postCommentTmp: IPostComment = req.body
 
     // Validate request
-    if (!postCommentTmp.post_id || !postCommentTmp.username_id || !postCommentTmp.text) {
+    if (!postCommentTmp.post_id || !postCommentTmp.user_id || !postCommentTmp.text) {
       return res.status(400).send({
         message: 'Falta contenido y/o no puede estar vacio.'
       })
@@ -58,6 +58,10 @@ export class PostCommentController {
   update: RouteCallback = function (req, res) {
     const postCommentTmp: IPostComment = req.body
 
+    if (!(req.session.userId === +req.params.id || req.session.isAdmin)) {
+      return res.status(403).send({ message: 'No puedes acceder a este contenido' })
+    }
+
     table()
       .where({ id: +req.params.id })
       .update(postCommentTmp)
@@ -72,6 +76,10 @@ export class PostCommentController {
   }
 
   delete: RouteCallback = function (req, res) {
+    if (!(req.session.userId === +req.params.id || req.session.isAdmin)) {
+      return res.status(403).send({ message: 'No puedes acceder a este contenido' })
+    }
+
     table()
       .where({ id: +req.params.id })
       .update({ isDeleted: true })

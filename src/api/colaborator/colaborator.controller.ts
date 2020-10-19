@@ -1,6 +1,5 @@
 import { RouteCallback } from '../../@types'
 import db from '../../database/db'
-import { IUsername } from '../username/username.model'
 import { IColaborator } from './colaborator.model'
 
 const table = () => db<IColaborator>('colaborator')
@@ -58,13 +57,12 @@ export class ColaboratorController {
   update: RouteCallback = function (req, res) {
     const colaboratorTmp: IColaborator = req.body
 
+    if (!(req.session.userId === +req.params.id || req.session.isAdmin)) {
+      return res.status(403).send({ message: 'No puedes acceder a este contenido' })
+    }
+
     table()
-      .select()
-      .whereIn('id', function () {
-        this.select('id_colaborator')
-          .from<IUsername>('username')
-          .where({ id: req.session?.userId })
-      })
+      .where({ id: +req.params.id, isDeleted: false })
       .update(colaboratorTmp)
       .then((colaborator: number) => {
         return colaborator > 0 ?
@@ -77,8 +75,12 @@ export class ColaboratorController {
   }
 
   delete: RouteCallback = function (req, res) {
+    if (!(req.session.userId === +req.params.id || req.session.isAdmin)) {
+      return res.status(403).send({ message: 'No puedes acceder a este contenido' })
+    }
+
     table()
-      .where({ id: req.session.userId })
+      .where({ id: +req.params.id })
       .update({ isDeleted: true })
       .then((colaborator: number) => {
         return colaborator > 0 ?

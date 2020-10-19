@@ -1,8 +1,8 @@
 import db from '../../database/db'
 import * as express from 'express'
-import { IUsername } from '../username/username.model'
+import { IUser } from '../user/user.model'
 
-const table = () => db<IUsername>('username')
+const table = () => db<IUser>('user')
 
 export function isAuthAdmin(req: express.Request, res: express.Response, next: express.NextFunction) {
   if (!req.session?.userId) {
@@ -15,7 +15,7 @@ export function isAuthAdmin(req: express.Request, res: express.Response, next: e
   table()
     .where({ id: req.session.userId })
     .select('isAdmin')
-    .then((user: Pick<IUsername, 'isAdmin'>[]) => {
+    .then((user: Pick<IUser, 'isAdmin'>[]) => {
       return !!user[0].isAdmin ? next() :
         res.status(403).send({ message: 'No puedes acceder a este contenido' })
     })

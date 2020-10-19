@@ -1,6 +1,5 @@
 import { RouteCallback } from '../../@types'
 import db from '../../database/db'
-import { IUsername } from '../username/username.model'
 import { IOrganization } from './organization.model'
 
 const table = () => db<IOrganization>('organization')
@@ -59,13 +58,12 @@ export class OrganizationController {
   update: RouteCallback = function (req, res) {
     const organizationTmp: IOrganization = req.body
 
+    if (!(req.session.userId === +req.params.id || req.session.isAdmin)) {
+      return res.status(403).send({ message: 'No puedes acceder a este contenido' })
+    }
+
     table()
-      .select()
-      .whereIn('id', function () {
-        this.select('id_organization')
-          .from<IUsername>('username')
-          .where('id', req.session?.userId)
-      })
+      .where({ id: +req.params.id, isDeleted: false })
       .update(organizationTmp)
       .then((organization: number) => {
         return organization > 0 ?
@@ -78,6 +76,10 @@ export class OrganizationController {
   }
 
   delete: RouteCallback = function (req, res) {
+    if (!(req.session.userId === +req.params.id || req.session.isAdmin)) {
+      return res.status(403).send({ message: 'No puedes acceder a este contenido' })
+    }
+
     table()
       .where({ id: +req.params.id })
       .update({ isDeleted: true })

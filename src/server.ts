@@ -10,6 +10,17 @@ import session from 'express-session'
 import connectRedis from 'connect-redis'
 import { __cookie_secret__, __prod__ } from './api/core.constants'
 
+import db from './database/db'
+import { IUser } from './api/user/user.model'
+
+declare module "express-serve-static-core" {
+  interface Request {
+    populateUser: () => void
+    user: IUser
+  }
+}
+
+
 const main = async () => {
   // Declare server
   const app = express()
@@ -51,7 +62,23 @@ const main = async () => {
   // Start the server
   app.listen(app.get('port'), () => {
     console.log('server on port:', app.get('port'))
-  })
+  });
+
+  (() => {
+    const table = () => db<IUser>('user')
+
+    const populateUser = async (req: any) => {
+      if (req.user || !req.session?.userId) return
+
+      const userRes = await table().where('id', req.session.userId)
+      req.user = userRes[0] || null
+    }
+
+    app.use((req, res, next) => {
+      req.populateUser = () => populateUser(req)
+      next()
+    })
+  })()
 }
 
 main()
