@@ -58,6 +58,10 @@ export class JobPostPostulationController {
   update: RouteCallback = function (req, res) {
     const jobPostPostulationTmp: IJobPostPostulation = req.body
 
+    if (!(req.session.userId === +req.params.id || req.session.isAdmin)) {
+      return res.status(403).send({ message: 'No puedes acceder a este contenido' })
+    }
+
     table()
       .where({ id: +req.params.id, isDeleted: false })
       .update(jobPostPostulationTmp)
@@ -72,6 +76,10 @@ export class JobPostPostulationController {
   }
 
   delete: RouteCallback = function (req, res) {
+    if (!(req.session.userId === +req.params.id || req.session.isAdmin)) {
+      return res.status(403).send({ message: 'No puedes acceder a este contenido' })
+    }
+
     table()
       .where({ id: +req.params.id })
       .update({ isDeleted: true })
